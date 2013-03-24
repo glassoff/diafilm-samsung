@@ -1,7 +1,7 @@
 body{
     color: #fff;
     background: #000;
-    overflow: hidden;
+    /*overflow: hidden;*/
     margin:0;
     padding:0;
 }
@@ -70,6 +70,8 @@ body{
 
 .slide{
     text-align: center;
+
+    /*border: 1px solid #fff;*/
 }
     .slide img{
 
