@@ -13,11 +13,16 @@
 
         var originalAjax = $.ajax;
         $.ajax = function(options){
-            options.crossDomain = true;
+            //options.crossDomain = true;
             //options.dataType = 'jsonp';
             /*options.xhrFields = {
                 withCredentials: true
             };*/
+            options.xhr = function(){
+                var xhr = new CrossXHR();
+                xhr.getAllResponseHeaders = function(){ return "Content-Type: application/xml\n" }
+                return xhr;
+            };
             return originalAjax.call(this, options);
         }
 
@@ -44,9 +49,11 @@
                     break;
                 case 38:
                     app.scene.activeWidget.trigger('key_up');
+                    event.preventDefault();
                     break;
                 case 40:
                     app.scene.activeWidget.trigger('key_down');
+                    event.preventDefault();
                     break;
                 case 13:
                     app.scene.activeWidget.trigger('key_enter');
