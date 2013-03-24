@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Diafilm</title>
+
+		<script type='text/javascript' language='javascript' src='$MANAGER_WIDGET/Common/API/Widget.js'></script>
+		<script type='text/javascript' language='javascript' src='$MANAGER_WIDGET/Common/API/TVKeyValue.js'></script>
+
+        <!-- vendors -->
+        <script language="javascript" type="text/javascript" src="javascript/vendors/jquery-1.9.1.min.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/vendors/underscore-min.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/vendors/backbone.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/vendors/ejs_production.js"></script>
+
+        <!-- app -->
+        <script language="javascript" type="text/javascript" src="javascript/app.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/samsung.js"></script>
+
+        <!-- models -->
+        <script language="javascript" type="text/javascript" src="javascript/models/categoryModel.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/models/diafilmModel.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/models/slideModel.js"></script>
+
+        <!-- widget views -->
+        <script language="javascript" type="text/javascript" src="javascript/views/widgets/listWidget.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/views/widgets/hListWidget.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/views/widgets/buttonsWidget.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/views/widgets/slidesWidget.js"></script>
+
+        <!-- scene views -->
+        <script language="javascript" type="text/javascript" src="javascript/views/scenes/homeScene.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/views/scenes/diafilmListScene.js"></script>
+        <script language="javascript" type="text/javascript" src="javascript/views/scenes/diafilmScene.js"></script>
+
+        <!-- This is the Ad module -->
+        <script type="text/javascript" src="AdHub/AdIntegration.js"></script>
+
+        <!-- debug -->
+        <script language="javascript" type="text/javascript" src="javascript/vendors/json2.js"></script>
+
+		<link rel="stylesheet" href="css/main.css" type="text/css">
+
+	</head>
+
+	<body onload="app.onLoad();" onunload="app.onUnload();">
+		<!-- Dummy anchor as focus for key events -->
+		<a href='javascript:void(0);' id='anchor' onkeydown='app.appKeyHandler();'></a>
+        <div id="banner_02"></div>
+        <div id="container"></div>
+	</body>
+</html>
