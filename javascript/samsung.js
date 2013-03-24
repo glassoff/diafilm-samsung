@@ -6,12 +6,12 @@ var tvKey = new Common.API.TVKeyValue();
 app.onLoad = function()
 {
     this.on('app.blockexit', function(){
-        //widgetAPI.blockNavigation(event);
+        widgetAPI.blockNavigation(event);
     });
 
-	// To enable the key event processing
-	document.getElementById("anchor").focus();
-	
+    // To enable the key event processing
+    document.getElementById("anchor").focus();
+
 	// Set Default key handler function
     widgetAPI.sendReadyEvent();
 
@@ -55,6 +55,9 @@ app.appKeyHandler = function()
 }
 
 app.log = function() {
+    if(!app.config.debug){
+        return false;
+    }
     if (arguments.length === 2 && typeof arguments[1] === 'string' && typeof arguments[0] === 'object') {
         alert(arguments[1] + ': ' + JSON.stringify(arguments[0]));
     } else {
@@ -67,3 +70,9 @@ app.log = function() {
         }
     }
 }
+
+app.storage = {
+    initialize: function(){
+
+    }
+};

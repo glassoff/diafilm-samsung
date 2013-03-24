@@ -15,13 +15,16 @@ var app = {
     models: {},
     scenes: {},
     widgets: {},
-    scene: null //active scene
+    scene: null, //active scene
+    config: {}
 }
 
 _.extend(app, Backbone.Events);
 
 app.initialize = function(){
     var _this = this;
+
+    alert('app init...')
     this.on('key_return', function(){
         alert('app return');
         if (app.history.back()){
@@ -31,14 +34,13 @@ app.initialize = function(){
             _this.trigger('app.exit');
         }
     });
+
+    this.trigger("init");
 }
 
 app.start = function()
 {
-	alert('=========================')
     alert('start app...');
-
-    app.showScene("homeScene");
 }
 
 //show scene with history push
@@ -53,10 +55,10 @@ app.showScene = function(){
 
 //show scene without history
 app._showScene = function(){
-    var view;
+    var view;         //TODO автоматически рендерить виджеты в сцене
     if(typeof arguments[0] == 'object'){
         view = arguments[0];
-        view.render();
+        view.render();//TODO зачем заново рендерить? если нет изменений и элемент уже отрендерен
     }
     else if(typeof arguments[0] == 'string'){
         var sceneName = arguments[0];
@@ -83,7 +85,7 @@ app.onUnload = function()
 
 app.appKeyHandler = function()
 {
-
+    alert('key!')
 }
 
 app.log = function() {
@@ -96,6 +98,7 @@ app.history = {
         this.items.push(scene);
     },
     back: function(){
+        //TODO нужно корректно удалить скрываемую сцену
         var scene = this.items.pop();
         if(scene){
             app._showScene(scene);
@@ -106,26 +109,49 @@ app.history = {
 };
 
 /* view with widgets */
-app.widgetView = Backbone.View.extend({
+app.Widget = Backbone.View.extend({
     initWidgets: function(){
         this.widgets = [];
-        this.activeWidget = this;
+        this.activeWidget = new app.Widget();
+        this.parent = new app.Widget();
 
-        this.on("prev_widget", function(){
-            alert('previous widget')
-            var view = this.widgets[this.activeWidget.index - 1];
-            this.focusWidget(view);
-        });
-        this.on("next_widget", function(){
-            alert('next widget')
-            var view = this.widgets[this.activeWidget.index + 1];
-            this.focusWidget(view);
-        });
+        if(this.options.name){
+            this.name = this.options.name;
+        }
+
+        _.bindAll(this, 'prevWidget', 'nextWidget');
+
+        this.on("prev_widget", this.prevWidget);
+        this.on("next_widget", this.nextWidget);
+
+        return this;
     },
     addWidget: function(view){
         view.parent = this;
         var length = this.widgets.push(view);
         view.index = length - 1;
+    },
+    prevWidget: function(){
+        this.log('previous widget')
+        var view = this.widgets[this.activeWidget.index - 1];
+        if(view){
+            this.focusWidget(view);
+        }
+        else{
+            this.log('to parent ' + this.parent.name)
+            this.parent.trigger("prev_widget");
+        }
+    },
+    nextWidget: function(){
+        this.log('next widget')
+        var view = this.widgets[this.activeWidget.index + 1];
+        if(view){
+            this.focusWidget(view);
+        }
+        else{
+            this.log('to parent ' + this.parent.name)
+            this.parent.trigger("next_widget");
+        }
     },
     focusWidget: function(view){
         if(!view){
@@ -134,15 +160,27 @@ app.widgetView = Backbone.View.extend({
         this.activeWidget.blur();
         view.focus();
         this.activeWidget = view;
-    }
-});
-
-/* widget */
-app.Widget = app.widgetView.extend({
+    },
     index: 0,//index in the parent
     focus: function(){},
-    blur: function(){}
+    blur: function(){},
+    name: "NoName",
+    log: function(){
+        var _this = this;
+        var args = [];
+        _.each(arguments, function(arg, i){
+            args[i] = '[' + _this.name + ']' + ': ' + arg;
+        });
+        app.log.apply(app, args);
+    }
 });
 
 /* scene with widgets */
 app.widgetScene = app.Widget;
+
+/* storage */
+app.storage = {
+    initialize: function(){
+
+    }
+};

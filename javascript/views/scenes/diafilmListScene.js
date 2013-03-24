@@ -22,7 +22,7 @@
 
             this.diafilms.on("key_enter", function(){
                  app.showScene("diafilmScene", {
-                    diafilm: _this.collection[_this.diafilms.activeIndex]
+                    diafilm: _this.collection[_this.diafilms.activeIndex + _this.diafilms.shift]
                  });
              });
 

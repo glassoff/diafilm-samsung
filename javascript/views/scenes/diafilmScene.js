@@ -12,6 +12,7 @@
 
             this.diafilm.fetch({
                 success: function(){
+                    _this.slides.images = _this.diafilm.get('imgs');
                     _this.render();
                 }
             });
@@ -23,6 +24,8 @@
         },
         render: function(){
             $(this.el).html(new EJS({url: 'javascript/templates/diafilm.ejs'}).render({}));
+
+            $('#slides', this.el).html(this.slides.render().el);
 
             return this;
         }
