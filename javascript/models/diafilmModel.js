@@ -35,6 +35,10 @@
 
     app.models.diafilmCollection = Backbone.Collection.extend({
         url: function(){
+            if(!/WebKit/i.test(navigator.userAgent)){
+                app.log('NOT SUPPORT GZIP');
+                return 'http://diafilmy.su/dia-listf.php';
+            }
             return 'http://diafilmy.su/dia-listfgz.php';
         },
         model: app.models.diafilmModel,
@@ -42,16 +46,18 @@
             app.log('PARSE')
             var _this = this;
             var diafilms = [];
-            var item;
-            $(res).find('post').each(function(){
+            $(res).find('post').each(function(i){
+                var item;
                 item = {};
                 $(this).children().each(function(){
-                    var name = $(this).prop('tagName');
-                    var value = $(this).text();
+                    var name, value;
+                    name = this.tagName;
+                    value = this.textContent;
                     item[name] = value;//TODO cat array
                     if(name == 'cat'){
                         _this.categoryCollection.add({'title': value});
                     }
+
                 });
                 item['col'] = true;
                 diafilms.push(item);
