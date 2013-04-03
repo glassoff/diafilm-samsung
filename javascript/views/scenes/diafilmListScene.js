@@ -7,10 +7,9 @@
 
             this.collection = this.options.diafilmCollection;
 
-            this.diafilms = new app.widgets.hListWidget({
-                itemWidth: 270,
-                itemHeight: 130,
-                marginRight: 10
+            this.diafilms = new app.widgets.tilesWidget({
+                tileWidth: 100,
+                tileHeight: 100
             });
             this.diafilms.sourceDelegate = this;
 

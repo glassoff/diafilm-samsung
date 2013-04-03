@@ -1,7 +1,4 @@
 body{
-    color: #fff;
-    background: #000;
-    /*overflow: hidden;*/
     margin:0;
     padding:0;
 }
@@ -9,70 +6,56 @@ body{
 #container{
     width: 1280px;
     height: 720px;
-    color: #fff;
-    background: #000;
     padding: 0;
     margin: 0;
+
+    overflow: hidden;
+
+    border: 1px solid #000;
 }
+
 
 .vList{
 
 }
-    .vList li{
-        font-size: 25px;
-    }
-    .vList li.active{
-        font-size: 32px;
-        color: #d3d3d3;
-    }
-
-/* hList widget styles */
-.hList{
-
+.vList li{
+    font-size: 25px;
 }
-    .hList .container{
-        overflow: hidden; /*!required*/
-        margin:0;
-        padding:0;
-
-        clear:both;
-    }
-        .hList ul{
-            margin:0;
-            padding:0;
-
-            width: 10000px;/*!required*/
-        }
-            .hList li{
-                position: relative;
-                /*display: inline-block;*/
-                display: block;
-                float:left;
-                margin: 0;
-                margin-right:20px;
-
-                width: 200px;
-                height:250px;
-                border:1px solid #000;
-            }
-            .hList li:first-child{
-                margin-left: 40px;
-            }
-            .hList li.active{
-                background: #d3d3d3;
-
-            }
-            .hList .item-debug{
-                position: absolute;
-                right: 0;
-                bottom: 0;
-            }
-
-.slide{
-    text-align: center;
-
-    /*border: 1px solid #fff;*/
+.vList li.active{
+    font-size: 32px;
+    color: #d3d3d3;
 }
-    .slide img{
 
+.active{
+    text-decoration: underline;
+}
+
+
+.tiles{
+    width: 1280px;
+    overflow: hidden;
+}
+    .tiles__wrapper{
+        width: 1500px;
     }
+    .tiles .tile{
+        height: 192px;
+        width: 206px;
+    }
+
+
+.banner{
+    background: red;
+}
+.tiles .banner_vertical{
+    width: 160px;
+    height: 595px;
+}
+.banner_horisontal_full{
+    width: 1280px;
+    height: 115px;
+}
+.tiles .banner_horisontal_half{
+    width: 640px;
+    height: 115px;
+}
