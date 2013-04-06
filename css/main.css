@@ -37,15 +37,52 @@ body{
 }
     .tiles__wrapper{
         width: 1500px;
+        overflow: hidden;
     }
     .tiles .tile{
         height: 192px;
         width: 206px;
+
+        background: #1D1D1D;
+    }
+    .tiles .tile .opacity{
+        opacity: 0.65;
+        background: #000;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+    .tiles .tile.pseudo-hover .opacity{
+        display: block;
+    }
+    .tiles .tile .tile-debug{
+        position: absolute;
+        top: 0;
+        right:0;
+        font-size: 24px;
+        padding: 5px;
+    }
+    .tiles .tile .title{
+        position: absolute;
+        bottom:0;
+        left:0;
+        padding: 5px;
+        font-size: 16px;
+        display: none;
+    }
+    .tiles .tile.pseudo-hover .title{
+        display: block;
+
+    }
+    .tiles .tile.pseudo-hover {
+        outline: 5px #225a68 solid;
+
     }
 
 
 .banner{
-    background: red;
+    background: gray;
 }
 .tiles .banner_vertical{
     width: 160px;
@@ -58,4 +95,8 @@ body{
 .tiles .banner_horisontal_half{
     width: 640px;
     height: 115px;
+}
+
+.header{
+    height: 90px;
 }
