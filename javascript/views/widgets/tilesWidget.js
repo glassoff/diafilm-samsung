@@ -41,9 +41,11 @@
                 this.shift++;
                 this.renderTiles();
 
-                //var margin = this.firstMargin;//- (this.tileWidth / 4 - (this.tileWidth - this.outRightVal));
-                //app.log('MARGIN: ', margin)
-                //this.wrapper.css('margin-left', margin+'px');
+                var viewedWidth = this.tileWidth / 4;
+
+                var margin = - ((this.tileWidth - this.outRightVal) - viewedWidth);
+                app.log('MARGIN: ', margin)
+                this.wrapper.css('margin-left', margin+'px');
             }
             else{
                 this.activateTileOnIndex(this.activeTileIndex + 1);

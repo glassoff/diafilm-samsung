@@ -15,9 +15,12 @@
                 var item = _this.collection[index];
 
                 var imgSrc = _this.collection[index].get('img');
-                var parts = imgSrc.match(/^http:\/\/diafilmy.su\/(.*)$/);
+                var parts = imgSrc.match(/^http:\/\/diafilmy.su\/uploads\/(.*)\.(.*?)$/);
 
-                var imgUrl = "http://diafilmy.su/phpthumb/phpThumb.php?src=/"+parts[1]+"&w=160&h=160&zc=1";
+                var thumbType = 'samsung-tv';
+
+                var imgUrl = "http://diafilmy.su/thumbs/" + parts[1] + '-thumb-' + thumbType + '.' + parts[2];
+                app.log(imgSrc);
 
                 var html = $(
                     '<div>'+
