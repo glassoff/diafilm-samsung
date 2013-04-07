@@ -6,10 +6,12 @@
             var _this = this;
 
             this.collection = this.options.diafilmCollection;
+            this.category = this.options.category;
 
             this.diafilms = new app.widgets.tilesWidget({
                 tileWidth: 160,
-                tileHeight: 160
+                tileHeight: 160,
+                rows: 3
             });
             this.diafilms.getTileOnIndex = function(index){
                 var item = _this.collection[index];
@@ -20,7 +22,7 @@
                 var thumbType = 'samsung-tv';
 
                 var imgUrl = "http://diafilmy.su/thumbs/" + parts[1] + '-thumb-' + thumbType + '.' + parts[2];
-                app.log(imgSrc);
+                //app.log(imgSrc);
 
                 var html = $(
                     '<div>'+
@@ -58,15 +60,15 @@
 
             this.diafilms.on("key_enter", function(){
                  app.showScene("diafilmScene", {
-                    diafilm: _this.collection[_this.diafilms.activeIndex + _this.diafilms.shift]
+                    diafilm: _this.collection[_this.diafilms.getActiveIndex()]
                  });
              });
 
             this.focusWidget(this.diafilms);
         },
-        render: function(){
+        render: function(){app.log(this.category)
             $(this.el).html(new EJS({url: 'javascript/templates/diafilmList.ejs'}).render({
-                //categories: this.collection
+                category: this.category
             }));
             $('#diafilmsWidget').append(this.diafilms.render().el);
             return this;

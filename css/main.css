@@ -11,26 +11,36 @@ body{
 
     overflow: hidden;
 
-    border: 1px solid #000;
+    //border: 1px solid #fff;
 }
 
+/* home */
+.home{
+    padding: 10px 30px;
+}
 
 .vList{
 
 }
 .vList li{
     font-size: 25px;
+    margin: 10px 0;
 }
 .vList li.active{
     font-size: 32px;
     color: #d3d3d3;
 }
 
-.active{
-    text-decoration: underline;
+#categoriesWidget{
+    float: left;
+}
+#latest{
+    float: right;
+    width: 650px;
 }
 
 
+/* tiles */
 .tiles{
     width: 1280px;
     overflow: hidden;
@@ -80,7 +90,7 @@ body{
 
     }
 
-
+/* banners */
 .banner{
     background: gray;
 }
@@ -97,6 +107,34 @@ body{
     height: 115px;
 }
 
+#bottomBanner{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+/* header */
 .header{
-    height: 90px;
+    position: relative;
+    padding: 15px 20px 10px;
+}
+    .header__back{
+
+    }
+    .header__logo{
+        float: right;
+    }
+    .header__logo img{
+        width: 50px;
+    }
+    .header__title{
+
+    }
+
+/* slides */
+.slide{
+    text-align: center;
+ }
+.slide img{
+
 }

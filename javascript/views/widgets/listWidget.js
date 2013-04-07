@@ -21,6 +21,13 @@
                 }
                 _this.parent.trigger('prev_widget');
             });
+
+            this.on("key_left", function(){
+                _this.parent.trigger('prev_widget');
+            });
+            this.on("key_right", function(){
+                _this.parent.trigger('next_widget');
+            });
         },
         focus: function(){
 
@@ -29,7 +36,7 @@
 
         },
         tagName: 'ul',
-        className: 'vList',
+        className: 'vList unstyled',
         render: function(){
             var _this = this;
 

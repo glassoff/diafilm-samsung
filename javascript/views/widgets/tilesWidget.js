@@ -10,14 +10,23 @@
 
             this.tileWidth = this.options.tileWidth || this.tileWidth;
             this.tileHeight = this.options.tileHeight || this.tileHeight;
+            this.rows = this.options.rows || this.rows;
+            this.cols = this.options.cols || this.cols;
 
             this.activeTileIndex = 0;
 
-            this.calculateCount();
+            if(!this.cols){
+                this.calculateCount();
+            }
+            this.count = this.cols * this.rows;
+            app.log('COUNT:', this.count)
+
             this.prepareTiles();
 
             this.on("key_right", this.right, this);
             this.on("key_left", this.left, this);
+            this.on("key_up", this.up, this);
+            this.on("key_down", this.down, this);
         },
         //options
         count: 0,
@@ -26,6 +35,7 @@
         tileMargin: 5,
         rows: 3,
         containerWidth: 1280,
+        firstMargin: 0,
 
         shift: 0,
 
@@ -34,18 +44,21 @@
         outRightTileIndex: 0,
         outRightVal: 0,
 
+        plusOne: 0,
+
         right: function(){
             app.log('slides right')
 
             if(this.activeTileIndex == this.outRightTileIndex - 1){
-                this.shift++;
-                this.renderTiles();
 
-                var viewedWidth = this.tileWidth / 4;
+                var viewedWidth = this.tileWidth / 2;
+                var margin = 0;
 
-                var margin = - ((this.tileWidth - this.outRightVal) - viewedWidth);
+                var margin = - ((this.outRightVal - this.tileWidth) + viewedWidth);
                 app.log('MARGIN: ', margin)
                 this.wrapper.css('margin-left', margin+'px');
+
+                this.activateTileOnIndex(this.activeTileIndex + 1);
             }
             else{
                 this.activateTileOnIndex(this.activeTileIndex + 1);
@@ -56,7 +69,23 @@
         left: function(){
             app.log('slides left')
 
-            this.activateTileOnIndex(this.activeTileIndex - 1);
+            if(this.activeTileIndex == this.cols - this.outRightTileIndex){
+                this.shift--;
+                this.renderTiles();
+            }
+            else{
+                this.activateTileOnIndex(this.activeTileIndex - 1);
+            }
+
+
+        },
+        up: function(){
+            app.log('slides up')
+            this.activateTileOnIndex(this.activeTileIndex - this.cols);
+        },
+        down: function(){
+            app.log('slides down')
+            this.activateTileOnIndex(this.activeTileIndex + this.cols);
         },
 
         focus: function(){
@@ -69,6 +98,9 @@
         },
 
         activateTileOnIndex: function(index){
+            if(!this.tiles[index]){
+                return;
+            }
             this.deactivateTileOnIndex(this.activeTileIndex);
             this.activateTile(this.tiles[index]);
             this.activeTileIndex = index;
@@ -87,21 +119,25 @@
             el.removeClass('pseudo-hover');
         },
 
+        getActiveIndex: function(){
+            return this.tiles[this.activeTileIndex].index + this.shift * this.rows;
+        },
+
         calculateCount: function(){
             var w = 0;
             for(var i = 0; true; i++){
                 w += this.tileWidth + this.tileMargin * 2;
                 if(w > this.containerWidth){
-                    this.cols = i + 1;
-                    if(w - this.containerWidth < this.tileWidth/2){
-                        this.cols++;
-                    }
-                    this.count = this.cols * this.rows;
-
                     this.outRightTileIndex = i;
                     this.outRightVal = w - this.containerWidth;
 
-                    app.log('COUNT:', this.count)
+                    this.cols = i + 1;
+                    if(w - this.containerWidth < this.tileWidth/2){
+                        this.cols++;
+                        this.plusOne = 1;
+                        this.outRightVal += this.tileWidth;
+                    }
+
                     app.log('COLS:', this.cols)
                     app.log('Outed:', this.outRightTileIndex, 'OutedVal:', this.outRightVal)
                     break;
@@ -155,6 +191,8 @@
             var wrapperWidth = (this.tileWidth + this.tileMargin*2) * this.cols;
             app.log('wrapper width', wrapperWidth)
             this.wrapper.css('width', wrapperWidth + 'px');
+
+            this.wrapper.css('margin-left', this.firstMargin + 'px');
 
         },
         renderTiles: function(){

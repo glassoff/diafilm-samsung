@@ -7,22 +7,66 @@
 
             this.initModels();
 
+            //categories
             this.categories = new app.widgets.listWidget({
                 collection: this.categoryCollection
             });
             this.addWidget(this.categories);
             this.diafilmCollection.fetch();
 
-            this.diafilmCollection.on('reset', function(){
-                app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
-                _this.render();
-            });
-
             this.categories.on("key_enter", function(){
                  app.showScene("diafilmListScene", {
-                     diafilmCollection: _this.diafilmCollection.where({cat: _this.categoryCollection.at(_this.categories.activeIndex).get('title')})
+                     diafilmCollection: _this.diafilmCollection.where({cat: _this.categoryCollection.at(_this.categories.activeIndex).get('title')}),
+                     category: _this.categoryCollection.at(_this.categories.activeIndex)
                  });
              });
+
+            //latests
+            this.latests = new app.widgets.tilesWidget({
+                tileWidth: 150,
+                tileHeight: 150,
+                rows: 3,
+                cols: 4
+            });
+
+            this.latests.getTileOnIndex = function(index){
+
+                var item = _this.diafilmCollection.at(index);
+
+                var imgSrc = item.get('img');
+                var parts = imgSrc.match(/^http:\/\/diafilmy.su\/uploads\/(.*)\.(.*?)$/);
+
+                var thumbType = 'samsung-tv';
+
+                var imgUrl = "http://diafilmy.su/thumbs/" + parts[1] + '-thumb-' + thumbType + '.' + parts[2];
+                //app.log(imgSrc);
+
+                var html = $(
+                    '<div>'+
+                        '<div class="opacity"></div>'+
+                        '<img width="150" src="'+imgUrl+'"/>'+
+                        '<div class="title">'+item.get('title')+'</div>'+
+                        '</div>'
+                );
+
+                /*var img = document.createElement("img");
+                 img.src = imgSrc;
+                 //img.width = 160;
+
+                 var html = img;*/
+                return html;
+            };
+
+            this.addWidget(this.latests);
+
+
+            this.diafilmCollection.on('reset', function(){
+                app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
+
+                //this.latests.count =
+
+                _this.render();
+            });
 
             this.focusWidget(this.categories);
         },
@@ -37,6 +81,7 @@
 
             }));
             $('#categoriesWidget').append(this.categories.render().el);
+            $('#latestWidget').append(this.latests.render().el);
             return this;
         }
     });
