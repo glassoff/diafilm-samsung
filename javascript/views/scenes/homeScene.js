@@ -59,6 +59,12 @@
 
             this.addWidget(this.latests);
 
+            this.latests.on("key_enter", function(){
+                app.showScene("diafilmScene", {
+                    diafilm: _this.diafilmCollection.at(_this.latests.getActiveIndex())
+                });
+            });
+
 
             this.diafilmCollection.on('reset', function(){
                 app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
