@@ -18,8 +18,8 @@
             if(!this.cols){
                 this.calculateCount();
             }
-            this.count = this.cols * this.rows;
-            app.log('COUNT:', this.count)
+            this.tilesCount = this.cols * this.rows;
+            app.log('COUNT:', this.tilesCount)
 
             this.prepareTiles();
 
@@ -41,27 +41,43 @@
 
         cols: 0,
 
+        tilesCount: 0,
+
         outRightTileIndex: 0,
         outRightVal: 0,
 
         plusOne: 0,
 
+        isTileVisible: function(tile){
+            return tile.el.css('visibility') == 'visible';
+        },
+        isNextVisible: function(){
+            return this.isTileVisible(this.tiles[this.activeTileIndex + 1]);
+        },
         right: function(){
-            app.log('slides right')
+            app.log('slides right', this.activeTileIndex + 1)
 
-            if(this.activeTileIndex == this.outRightTileIndex - 1){
+            var activeTile = this.tiles[this.activeTileIndex];
 
-                var viewedWidth = this.tileWidth / 2;
+            if(this.activeTileIndex == (this.outRightTileIndex + this.cols * activeTile.row) - 1 && this.isNextVisible()){
+
+                this.shift++;
+                this.renderTiles();
+
+                /*var viewedWidth = this.tileWidth / 2;
                 var margin = 0;
 
                 var margin = - ((this.outRightVal - this.tileWidth) + viewedWidth);
                 app.log('MARGIN: ', margin)
                 this.wrapper.css('margin-left', margin+'px');
 
+                this.activateTileOnIndex(this.activeTileIndex + 1);*/
+            }
+            else if(this.isNextVisible()){
                 this.activateTileOnIndex(this.activeTileIndex + 1);
             }
             else{
-                this.activateTileOnIndex(this.activeTileIndex + 1);
+                this.parent.trigger('next_widget');
             }
 
 
@@ -69,12 +85,17 @@
         left: function(){
             app.log('slides left')
 
-            if(this.activeTileIndex == this.cols - this.outRightTileIndex){
+            var activeTile = this.tiles[this.activeTileIndex];
+
+            if(this.activeTileIndex == 1 + this.cols * activeTile.row && this.shift > 0){
                 this.shift--;
                 this.renderTiles();
             }
-            else{
+            else if(this.activeTileIndex > 0 + this.cols * activeTile.row){
                 this.activateTileOnIndex(this.activeTileIndex - 1);
+            }
+            else{
+                this.parent.trigger('prev_widget');
             }
 
 
@@ -95,10 +116,12 @@
         },
         blur: function(){
             app.log('tiles blur')
+
+            this.deactivateTileOnIndex(this.activeTileIndex);
         },
 
         activateTileOnIndex: function(index){
-            if(!this.tiles[index]){
+            if(!this.tiles[index] || !this.isTileVisible(this.tiles[index])){
                 return;
             }
             this.deactivateTileOnIndex(this.activeTileIndex);
@@ -119,8 +142,11 @@
             el.removeClass('pseudo-hover');
         },
 
+        getTileIndex: function(tile){
+            return tile.index + this.shift * this.rows;
+        },
         getActiveIndex: function(){
-            return this.tiles[this.activeTileIndex].index + this.shift * this.rows;
+            return this.getTileIndex(this.tiles[this.activeTileIndex]);
         },
 
         calculateCount: function(){
@@ -162,7 +188,7 @@
 
             var w = 0;
             var outedRight = false;
-            for(var i = 0; i < this.count; i++){
+            for(var i = 0; i < this.tilesCount; i++){
                 var tileEl = $('<div class="tile">');
 
                 tileEl.css({
@@ -181,7 +207,9 @@
                 var tile = {
                     el: tileEl,
                     i: i,
-                    index: index
+                    index: index,
+                    row: row,
+                    col: col
                 };
 
                 this.tiles.push(tile);
@@ -199,7 +227,9 @@
             var _this = this;
             _.each(this.tiles, function(tile, i){
                 var tileEl = tile.el;
-                var index = tile.index + _this.shift * _this.rows;
+                tileEl.css('visibility', 'visible');
+
+                var index = _this.getTileIndex(tile);
 
                 if(!_this.cache[index]){
                     _this.cache[index] = _this.getTileOnIndex(index);
@@ -207,11 +237,16 @@
 
                 var html = _this.cache[index];
 
+                if(!html){
+                    tileEl.css('visibility', 'hidden');
+                }
+
                 if(app.config.debug){
-                    var debug = $('<div class="tile-debug">').text(index).appendTo(html);
+                    var debug = $('<div class="tile-debug">').text('('+i+') ' + index).appendTo(html);
                 }
 
                 tileEl.html(html);
+
                 /*var el = tileEl.get(0);
                 if(el.firstChild){
                     var a = el.removeChild(el.firstChild);
