@@ -10,8 +10,12 @@
             var _this = this;
 
             this.on("key_down", function(){
-                _this.activeIndex++;
-                _this.render();
+                if(_this.activeIndex <= _this.count - 2){
+                    _this.activeIndex++;
+                    _this.render();
+                    return;
+                }
+                _this.parent.trigger('next_widget');
             });
             this.on("key_up", function(){
                 if(_this.activeIndex > 0){
@@ -29,11 +33,12 @@
                 _this.parent.trigger('next_widget');
             });
         },
+        count: 0,
         focus: function(){
-
+            this.$el.find('[rel='+this.activeIndex+']').addClass('active');
         },
         blur: function(){
-
+            this.$el.find('[rel='+this.activeIndex+']').removeClass('active');
         },
         tagName: 'ul',
         className: 'vList unstyled',
@@ -43,6 +48,7 @@
             this.$el.empty();
             this.collection.each(function(item, i){
                 var itemEl = $('<li>').text(item.get('title'));
+                itemEl.attr('rel', i);
                 if(i == _this.activeIndex){
                     itemEl.addClass('active');
                 }

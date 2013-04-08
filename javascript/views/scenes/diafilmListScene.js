@@ -16,6 +16,10 @@
             this.diafilms.getTileOnIndex = function(index){
                 var item = _this.collection[index];
 
+                if(!item){
+                    return;
+                }
+
                 var imgSrc = _this.collection[index].get('img');
                 var parts = imgSrc.match(/^http:\/\/diafilmy.su\/uploads\/(.*)\.(.*?)$/);
 
@@ -66,7 +70,7 @@
 
             this.focusWidget(this.diafilms);
         },
-        render: function(){app.log(this.category)
+        render: function(){//app.log(this.category)
             $(this.el).html(new EJS({url: 'javascript/templates/diafilmList.ejs'}).render({
                 category: this.category
             }));
