@@ -42,6 +42,17 @@
             return 'http://diafilmy.su/dia-listfgz.php';
         },
         model: app.models.diafilmModel,
+        comparator: function(one, two){
+            if(one.get('id') > two.get('id')){
+                return -1;
+            }
+            else if(one.get('id') < two.get('id')){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        },
         parse: function(res){
             app.log('PARSE')
             var _this = this;
