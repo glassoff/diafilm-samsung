@@ -133,6 +133,7 @@ body{
 
 /* slides */
 .slide{
+    background: #000;
     text-align: center;
  }
 .slide img{
