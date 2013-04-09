@@ -1,7 +1,6 @@
 (function(){
     app.scenes.homeScene = app.widgetScene.extend({
         init: function(){
-            this.initWidgets();
 
             var _this = this;
 
@@ -70,7 +69,6 @@
                 app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
 
                 _this.categories.count = _this.categoryCollection.length;
-                //this.latests.count =
 
                 _this.render();
             });
