@@ -88,7 +88,7 @@
                 overflow: 'hidden'
             });
 
-            app.log('SLIDES', this.images)
+            //app.log('SLIDES', this.images)
 
 
             this.currentSlide = this.slideContent(0);

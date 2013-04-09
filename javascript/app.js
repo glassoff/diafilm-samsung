@@ -67,7 +67,15 @@ app._showScene = function(){
         if(arguments[1]){
             data = _.extend(data, arguments[1]);
         }
+
         view = new app.scenes[sceneName](data);
+
+        //XXX: если рендерится сразу после инициализации, то событие не перехватитсья
+        view.on("rendered", function(){
+            view.focusWidget(view.activeWidget);
+        });
+
+        view.init();
     }
     this.scene = view; //set active
     return view;
@@ -110,10 +118,17 @@ app.history = {
 
 /* view with widgets */
 app.Widget = Backbone.View.extend({
+    init: function(){
+        //THIS IS CONSTRUCTOR!
+    },
+    initialize: function(){
+        this.initWidgets();
+    },
+    // constructor, remember to call
     initWidgets: function(){
         this.widgets = [];
-        this.activeWidget = new app.Widget();
-        this.parent = new app.Widget();
+        this.activeWidget = null;
+        this.parent = null;
 
         if(this.options.name){
             this.name = this.options.name;
@@ -126,32 +141,85 @@ app.Widget = Backbone.View.extend({
 
         return this;
     },
+    bindWidget: function(view){
+        var _this = this;
+        _.each(this.widgets, function(widget, k){
+            if(widget == view){
+                view.parent = _this;
+                view.index = k;
+            }
+        });
+
+    },
+    // adding children widgets
     addWidget: function(view){
         view.parent = this;
         var length = this.widgets.push(view);
         view.index = length - 1;
+
+        if(!this.activeWidget){
+            this.activeWidget = view;
+        }
+    },
+    replaceWidget: function(view, newView){
+        var _this = this;
+        _.each(this.widgets, function(widget, k){
+            if(widget == view){
+                var active = false;
+                if(_this.activeWidget == view){
+                    active = true;
+                }
+
+                _this.widgets[k] = newView;
+                newView.parent = _this;
+                newView.index = k;
+
+                if(active){
+                    //newView.focus();
+                    _this.activeWidget = newView;
+                }
+            }
+        });
     },
     prevWidget: function(){
         this.log('previous widget')
-        var view = this.widgets[this.activeWidget.index - 1];
+        var view;
+
+        if(this.widgets.length){
+            view = this.widgets[this.activeWidget.index - 1];
+        }
+
         if(view){
             this.focusWidget(view);
         }
         else{
-            this.log('to parent ' + this.parent.name)
-            this.parent.trigger("prev_widget");
+            if(this.parent){
+                this.log('to parent ' + this.parent.name)
+                this.parent.trigger("prev_widget");
+            }
         }
     },
     nextWidget: function(){
         this.log('next widget')
-        var view = this.widgets[this.activeWidget.index + 1];
+        var view;
+
+        if(this.widgets.length){
+            view = this.widgets[this.activeWidget.index + 1];
+        }
+
         if(view){
             this.focusWidget(view);
         }
         else{
-            this.log('to parent ' + this.parent.name)
-            this.parent.trigger("next_widget");
+            if(this.parent){
+                this.log('to parent ' + this.parent.name)
+                this.parent.trigger("next_widget");
+            }
         }
+    },
+    // set widget will be focused on view render
+    setActiveWidget: function(view){
+        this.activeWidget = view;
     },
     focusWidget: function(view){
         if(!view){
@@ -181,6 +249,6 @@ app.widgetScene = app.Widget;
 /* storage */
 app.storage = {
     initialize: function(){
-
+        app.log('not storage!');
     }
 };

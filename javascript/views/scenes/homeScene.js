@@ -1,6 +1,6 @@
 (function(){
     app.scenes.homeScene = app.widgetScene.extend({
-        initialize: function(){
+        init: function(){
             this.initWidgets();
 
             var _this = this;
@@ -75,7 +75,7 @@
                 _this.render();
             });
 
-            this.focusWidget(this.categories);
+            this.setActiveWidget(this.categories);
         },
         initModels: function(){
             this.categoryCollection = new app.models.categoryCollection();
@@ -89,6 +89,9 @@
             }));
             $('#categoriesWidget').append(this.categories.render().el);
             $('#latestWidget').append(this.latests.render().el);
+
+            this.trigger("rendered");
+
             return this;
         }
     });

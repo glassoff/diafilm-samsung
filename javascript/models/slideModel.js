@@ -5,7 +5,7 @@
     });
 
     app.models.slideCollection = Backbone.Collection.extend({
-        url: function(){app.log('--ID', this.diafilmId)
+        url: function(){//app.log('--ID', this.diafilmId)
             return 'http://diafilmy.su/dia.php?id=' + this.diafilmId;
         },
         model: app.models.slideModel,

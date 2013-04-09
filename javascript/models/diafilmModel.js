@@ -23,7 +23,7 @@
 
                 item[name] = value;
             });
-            app.log(item)
+            //app.log(item)
             return item;
         },
         fetch: function (options) {alert('DIAFILM FETCH')

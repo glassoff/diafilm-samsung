@@ -1,6 +1,6 @@
 (function(){
     app.scenes.diafilmListScene = app.widgetScene.extend({
-        initialize: function(){
+        init: function(){
             this.initWidgets();
 
             var _this = this;
@@ -68,13 +68,16 @@
                  });
              });
 
-            this.focusWidget(this.diafilms);
+            this.setActiveWidget(this.diafilms);
         },
         render: function(){//app.log(this.category)
             $(this.el).html(new EJS({url: 'javascript/templates/diafilmList.ejs'}).render({
                 category: this.category
             }));
             $('#diafilmsWidget').append(this.diafilms.render().el);
+
+            this.trigger("rendered");
+
             return this;
         }
     });

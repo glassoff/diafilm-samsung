@@ -1,6 +1,6 @@
 (function(){
     app.scenes.diafilmScene = app.widgetScene.extend({
-        initialize: function(){
+        init: function(){
             this.initWidgets();
 
             var _this = this;
@@ -19,13 +19,15 @@
 
 
 
-            this.focusWidget(this.slides);
+            this.setActiveWidget(this.slides);
 
         },
         render: function(){
             $(this.el).html(new EJS({url: 'javascript/templates/diafilm.ejs'}).render({}));
 
             $('#slides', this.el).html(this.slides.render().el);
+
+            this.trigger("rendered");
 
             return this;
         }

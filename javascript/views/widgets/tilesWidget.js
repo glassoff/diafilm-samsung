@@ -64,12 +64,15 @@
                 this.shift++;
                 this.renderTiles();
 
+                var margin = - this.outRightVal / 2;
+
+                this.wrapper.css('margin-left', margin+'px');
+
                 /*var viewedWidth = this.tileWidth / 2;
                 var margin = 0;
 
                 var margin = - ((this.outRightVal - this.tileWidth) + viewedWidth);
                 app.log('MARGIN: ', margin)
-                this.wrapper.css('margin-left', margin+'px');
 
                 this.activateTileOnIndex(this.activeTileIndex + 1);*/
             }
@@ -96,6 +99,10 @@
             }
             else{
                 this.parent.trigger('prev_widget');
+            }
+
+            if(this.activeTileIndex == 0 + this.cols * activeTile.row){
+                this.wrapper.css('margin-left', 0);
             }
 
 
@@ -242,7 +249,7 @@
                 }
 
                 if(app.config.debug){
-                    var debug = $('<div class="tile-debug">').text('('+i+') ' + index).appendTo(html);
+                    //var debug = $('<div class="tile-debug">').text('('+i+') ' + index).appendTo(html);
                 }
 
                 tileEl.html(html);
