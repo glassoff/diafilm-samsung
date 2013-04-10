@@ -49,6 +49,9 @@
         plusOne: 0,
 
         isTileVisible: function(tile){
+            if(!tile){
+                return false;
+            }
             return tile.el.css('visibility') == 'visible';
         },
         isNextVisible: function(){
