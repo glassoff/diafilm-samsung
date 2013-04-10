@@ -12,7 +12,22 @@
                 tileHeight: 160,
                 rows: 3
             });
+
             var images = new imgLoader();
+
+            images.controlLoad = true;
+            for(var i = 0; i < 24; i++){
+                if(_this.collection[i]){
+                    var imgUrl = _this.collection[i].get('img');
+                    images.add(_this.getThumbUrl(imgUrl));
+                }
+            }
+
+            images.onLoad = function(){
+                images.controlLoad = false;
+                _this.render();
+            };
+
             this.diafilms.getTileOnIndex = function(index){
                 var item = _this.collection[index];
 
@@ -49,7 +64,6 @@
 
             app.log('COUNT', _this.collection.length)
             _this.diafilms.count = _this.collection.length;
-            _this.render();
 
             this.diafilms.on("key_enter", function(){
                  app.showScene("diafilmScene", {
@@ -81,17 +95,31 @@
 
     //image loader
     var imgLoader = function(){
-
+        this.images = {};
+        this.loaded = 0;
+        this.controlLoad = false;
     };
     imgLoader.prototype.images = {};
+    imgLoader.prototype.loaded = 0;
+    imgLoader.prototype.controlLoad = false;
     imgLoader.prototype.add = function(url){
         if(!this.images[url]){
             this.images[url] = this.createImg(url);
         }
     };
     imgLoader.prototype.createImg = function(url){
+        var _this = this;
+
         var img = document.createElement("img");
-        img.src = url;app.log(url)
+        img.src = url;
+        $(img).load(function(){
+            _this.loaded++;
+            //app.log('load ', _this.loaded, ' from ', _.size(_this.images))
+            if(_this.controlLoad && _this.loaded >= _.size(_this.images)){
+                app.log('IMAGES LOAD! ', _this.loaded);
+                _this.onLoad();
+            }
+        });
         return img;
     };
     imgLoader.prototype.get = function(url){
@@ -100,5 +128,7 @@
         }
         return this.images[url];
     };
+    imgLoader.prototype.onLoad = function(){};
+
 
 })();
