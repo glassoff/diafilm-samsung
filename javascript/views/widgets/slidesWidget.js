@@ -37,6 +37,11 @@
                 return false;
             }
 
+            if(this.currentIndex <= 0){
+                app.log('stop')
+                return false;
+            }
+
             this.sliding = true;
             this.previousSlide.animate({
                 'margin-top': '+=' + this.height + 'px'
@@ -51,10 +56,13 @@
 
                     _this.currentIndex--;
 
-                    _this.previousSlide = _this.slideContent(_this.currentIndex - 1);
-                    _this.previousSlide.css('margin-top', -_this.height + 'px');
+                    if(_this.currentIndex > 0){
+                        _this.previousSlide = _this.slideContent(_this.currentIndex - 1);
+                        _this.previousSlide.css('margin-top', -_this.height + 'px');
 
-                    _this.$el.prepend(_this.previousSlide);
+                        _this.$el.prepend(_this.previousSlide);
+
+                    }
 
                     _this.onSlide();
                 }
@@ -67,6 +75,11 @@
 
             if(this.sliding){
                 //this.queue.push('next');
+                return false;
+            }
+
+            if(this.currentIndex >= this.images.length - 1){
+                app.log('stop')
                 return false;
             }
 
@@ -85,9 +98,12 @@
                     _this.currentSlide = _this.nextSlide;
                     _this.currentIndex++;
 
-                    _this.nextSlide = _this.slideContent(_this.currentIndex + 1);
+                    if(_this.currentIndex < _this.images.length - 1){
+                        _this.nextSlide = _this.slideContent(_this.currentIndex + 1);
 
-                    _this.$el.append(_this.nextSlide);
+                        _this.$el.append(_this.nextSlide);
+
+                    }
 
                     _this.onSlide();
                 }
@@ -107,7 +123,9 @@
         className: 'slide',
         slideContent: function(index){
             for(var i = index; i < index + 3; i++){
-                this.imagesLoader.add(this.images[i]);
+                if(this.images[i]){
+                    this.imagesLoader.add(this.images[i]);
+                }
             }
             var img = this.imagesLoader.get(this.images[index]);
             return $('<div>').append($(img).css('height', this.height + 'px'));
