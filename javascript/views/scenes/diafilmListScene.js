@@ -13,13 +13,13 @@
                 rows: 3
             });
 
-            var images = new imgLoader();
+            var images = new app.imgLoader();
 
             images.controlLoad = true;
             for(var i = 0; i < 24; i++){
                 if(_this.collection[i]){
                     var imgUrl = _this.collection[i].get('img');
-                    images.add(_this.getThumbUrl(imgUrl));
+                    images.add(app.getThumbUrl(imgUrl));
                 }
             }
 
@@ -36,7 +36,7 @@
                 }
 
                 var imgSrc = _this.collection[index].get('img');
-                var imgUrl = _this.getThumbUrl(imgSrc);
+                var imgUrl = app.getThumbUrl(imgSrc);
 
                 var html = $(
                     '<div>'+
@@ -51,7 +51,7 @@
                 for(var i = index; i < index + 6; i++){
                     if(_this.collection[i]){
                         var imgUrl = _this.collection[i].get('img');
-                        images.add(_this.getThumbUrl(imgUrl));
+                        images.add(app.getThumbUrl(imgUrl));
                     }
                 }
 
@@ -73,14 +73,6 @@
 
             this.setActiveWidget(this.diafilms);
         },
-        getThumbUrl: function(imgSrc){
-            var parts = imgSrc.match(/^http:\/\/diafilmy.su\/uploads\/(.*)\.(.*?)$/);
-            var thumbType = 'samsung-tv';
-
-            var imgUrl = "http://diafilmy.su/thumbs/" + parts[1] + '-thumb-' + thumbType + '.' + parts[2];
-
-            return imgUrl;
-        },
         render: function(){
             $(this.el).html(new EJS({url: 'javascript/templates/diafilmList.ejs'}).render({
                 category: this.category
@@ -92,43 +84,5 @@
             return this;
         }
     });
-
-    //image loader
-    var imgLoader = function(){
-        this.images = {};
-        this.loaded = 0;
-        this.controlLoad = false;
-    };
-    imgLoader.prototype.images = {};
-    imgLoader.prototype.loaded = 0;
-    imgLoader.prototype.controlLoad = false;
-    imgLoader.prototype.add = function(url){
-        if(!this.images[url]){
-            this.images[url] = this.createImg(url);
-        }
-    };
-    imgLoader.prototype.createImg = function(url){
-        var _this = this;
-
-        var img = document.createElement("img");
-        img.src = url;
-        $(img).load(function(){
-            _this.loaded++;
-            //app.log('load ', _this.loaded, ' from ', _.size(_this.images))
-            if(_this.controlLoad && _this.loaded >= _.size(_this.images)){
-                app.log('IMAGES LOAD! ', _this.loaded);
-                _this.onLoad();
-            }
-        });
-        return img;
-    };
-    imgLoader.prototype.get = function(url){
-        if(!this.images[url]){
-            this.add(url);
-        }
-        return this.images[url];
-    };
-    imgLoader.prototype.onLoad = function(){};
-
 
 })();

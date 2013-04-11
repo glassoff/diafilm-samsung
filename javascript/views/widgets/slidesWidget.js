@@ -5,7 +5,11 @@
             this.parent = this;
 
             this.images = [];
+            this.imagesLoader = null;
             this.currentIndex = 0;
+
+            this.sliding = false;
+            this.queue = [];
 
             this.height = 720;
 
@@ -28,6 +32,12 @@
 
             var _this = this;
 
+            if(this.sliding){
+                //this.queue.push('prev');
+                return false;
+            }
+
+            this.sliding = true;
             this.previousSlide.animate({
                 'margin-top': '+=' + this.height + 'px'
             },{
@@ -45,6 +55,8 @@
                     _this.previousSlide.css('margin-top', -_this.height + 'px');
 
                     _this.$el.prepend(_this.previousSlide);
+
+                    _this.onSlide();
                 }
             });
         },
@@ -53,6 +65,12 @@
 
             var _this = this;
 
+            if(this.sliding){
+                //this.queue.push('next');
+                return false;
+            }
+
+            this.sliding = true;
             this.currentSlide.animate({
                 'margin-top': '-=' + this.height + 'px'
             },{
@@ -70,15 +88,29 @@
                     _this.nextSlide = _this.slideContent(_this.currentIndex + 1);
 
                     _this.$el.append(_this.nextSlide);
+
+                    _this.onSlide();
                 }
             });
 
 
         },
+        onSlide: function(){
+            this.sliding = false;
+
+            /*var action = this.queue.shift();
+            if(action){
+                this[action]();
+            }*/
+        },
         tagName: 'div',
         className: 'slide',
         slideContent: function(index){
-            return $('<div>').append($('<img>').attr('src', this.images[index]).css('height', this.height + 'px'));
+            for(var i = index; i < index + 3; i++){
+                this.imagesLoader.add(this.images[i]);
+            }
+            var img = this.imagesLoader.get(this.images[index]);
+            return $('<div>').append($(img).css('height', this.height + 'px'));
         },
         render: function(){
             var _this = this;
@@ -87,9 +119,6 @@
                 height: this.height + 'px',
                 overflow: 'hidden'
             });
-
-            //app.log('SLIDES', this.images)
-
 
             this.currentSlide = this.slideContent(0);
             this.nextSlide = this.slideContent(1);

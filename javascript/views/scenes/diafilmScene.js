@@ -6,17 +6,32 @@
 
             this.diafilm = this.options.diafilm;
 
+            var imagesLoader = new app.imgLoader();
+
             this.slides = new app.widgets.slidesWidget();
             this.addWidget(this.slides);
 
             this.diafilm.fetch({
                 success: function(){
-                    _this.slides.images = _this.diafilm.get('imgs');
-                    _this.render();
+                    var images = _this.diafilm.get('imgs');
+                    imagesLoader.controlLoad = true;
+                    for(var i = 0; i < 3; i++){
+                        if(images[i]){
+                            imagesLoader.add(images[i]);
+                        }
+                    }
+
+                    imagesLoader.onLoad = function(){
+                        imagesLoader.controlLoad = false;
+
+                        _this.slides.imagesLoader = imagesLoader;
+                        _this.slides.images = images;
+
+                        _this.render();
+                    };
+
                 }
             });
-
-
 
             this.setActiveWidget(this.slides);
 
