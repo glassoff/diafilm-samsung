@@ -71,13 +71,19 @@
                  });
              });
 
+            //banner
+            this.banner = new app.widgets.bannerWidget();
+            this.addWidget(this.banner);
+
             this.setActiveWidget(this.diafilms);
         },
         render: function(){
             $(this.el).html(new EJS({url: 'javascript/templates/diafilmList.ejs'}).render({
                 category: this.category
             }));
-            $('#diafilmsWidget').append(this.diafilms.render().el);
+            $('#diafilmsWidget', this.el).append(this.diafilms.render().el);
+
+            this.banner.render();
 
             this.trigger("rendered");
 

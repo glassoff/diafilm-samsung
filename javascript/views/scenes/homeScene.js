@@ -64,6 +64,10 @@
                 });
             });
 
+            //banner
+            this.banner = new app.widgets.bannerWidget();
+            this.addWidget(this.banner);
+
 
             this.diafilmCollection.on('reset', function(){
                 app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
@@ -85,8 +89,11 @@
             $(this.el).html(new EJS({url: 'javascript/templates/home.ejs'}).render({
 
             }));
-            $('#categoriesWidget').append(this.categories.render().el);
-            $('#latestWidget').append(this.latests.render().el);
+            $('#categoriesWidget', this.el).append(this.categories.render().el);
+            $('#latestWidget', this.el).append(this.latests.render().el);
+
+            //$('#bottomBanner', this.el).append(this.banner.render().el);
+            this.banner.render();
 
             this.trigger("rendered");
 
