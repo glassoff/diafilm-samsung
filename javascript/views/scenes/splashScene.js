@@ -1,8 +1,11 @@
 (function(){
     app.scenes.splashScene = app.widgetScene.extend({
+        histored: false,
         init: function(){
 
             var _this = this;
+
+            this.render();
 
             this.initModels();
 
@@ -11,13 +14,13 @@
             this.diafilmCollection.on('reset', function(){
                 app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
 
-                app.showScene("homeScene", {
-                    diafilmCollection: _this.diafilmCollection
-                });
+                setTimeout(function(){
+                    app.showScene("homeScene", {
+                        diafilmCollection: _this.diafilmCollection
+                    });
+                }, 1000);
 
             });
-
-            this.render();
         },
         initModels: function(){
             this.categoryCollection = new app.models.categoryCollection();

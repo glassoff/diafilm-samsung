@@ -161,3 +161,26 @@ body{
     font-size: 16px;
     padding: 5px;
 }
+
+/* splash */
+.splash{
+    text-align: center;
+    padding-top: 250px;
+}
+    .splash__img{
+
+    }
+        .splash__img img{
+            height: 200px;
+        }
+    .splash__title{
+        margin: 10px;
+        font-size: 40px;
+    }
+    .splash__slogan{
+        font-size: 25px;
+        margin: 20px 0 0 0;
+    }
+    .splash__loader{
+        margin: 20px 0 0 0;
+    }
