@@ -84,6 +84,10 @@
             this.diafilmCollection = new app.models.diafilmCollection();
             this.diafilmCollection.categoryCollection = this.categoryCollection;
         },
+        /*blur: function(){
+            this.banner.deactivate();
+            this.activeWidget.blur();
+        },*/
         render: function(){
             alert('render')
             $(this.el).html(new EJS({url: 'javascript/templates/home.ejs'}).render({

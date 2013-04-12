@@ -1,5 +1,6 @@
 
 app.config = {
     debug: true,
-    browser: false
+    browser: false,
+    inventoryId: '2100000689_001'
 };
