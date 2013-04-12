@@ -55,6 +55,7 @@ app.showScene = function(){
 
 //show scene without history
 app._showScene = function(){
+    var _this = this;
     var view;         //TODO автоматически рендерить виджеты в сцене
     if(typeof arguments[0] == 'object'){
         view = arguments[0];
@@ -70,14 +71,20 @@ app._showScene = function(){
 
         view = new app.scenes[sceneName](data);
 
-        //XXX: если рендерится сразу после инициализации, то событие не перехватитсья
         view.on("rendered", function(){
-            view.focusWidget(view.activeWidget);
+
+            if(_this.scene){
+                _this.scene.blur();
+            }
+
+            view.focus();
+
+            _this.scene = view; //set active
         });
 
         view.init();
     }
-    this.scene = view; //set active
+
     return view;
 }
 
@@ -118,9 +125,7 @@ app.history = {
 
 /* view with widgets */
 app.Widget = Backbone.View.extend({
-    init: function(){
-        //THIS IS CONSTRUCTOR!
-    },
+    disabled: false,
     initialize: function(){
         this.initWidgets();
     },
@@ -140,6 +145,9 @@ app.Widget = Backbone.View.extend({
         this.on("next_widget", this.nextWidget);
 
         return this;
+    },
+    isDisabled: function(){
+        return this.disabled;
     },
     bindWidget: function(view){
         var _this = this;
@@ -189,8 +197,23 @@ app.Widget = Backbone.View.extend({
             view = this.widgets[this.activeWidget.index - 1];
         }
 
+        if(view && view.isDisabled()){
+            view.log('disabled!')
+            if(this.widgets[this.activeWidget.index - 2]){
+                this.setActiveWidget(view);
+                return this.prevWidget();
+            }
+            else{
+                if(this.parent){
+                    this.log('to parent ' + this.parent.name)
+                    this.parent.trigger("prev_widget");
+                }
+                return;
+            }
+        }
+
         if(view){
-            this.focusWidget(view);
+            this.focusWidget(view, 'prev');
         }
         else{
             if(this.parent){
@@ -207,8 +230,23 @@ app.Widget = Backbone.View.extend({
             view = this.widgets[this.activeWidget.index + 1];
         }
 
+        if(view && view.isDisabled()){
+            view.log('disabled!')
+            if(this.widgets[this.activeWidget.index + 2]){
+                this.setActiveWidget(view);
+                return this.nextWidget();
+            }
+            else{
+                if(this.parent){
+                    this.log('to parent ' + this.parent.name)
+                    this.parent.trigger("next_widget");
+                }
+                return;
+            }
+        }
+
         if(view){
-            this.focusWidget(view);
+            this.focusWidget(view, 'next');
         }
         else{
             if(this.parent){
@@ -219,19 +257,34 @@ app.Widget = Backbone.View.extend({
     },
     // set widget will be focused on view render
     setActiveWidget: function(view){
+        this.activeWidget.blur();
         this.activeWidget = view;
     },
-    focusWidget: function(view){
+    focusWidget: function(view, direction){
         if(!view){
             return;
         }
         this.activeWidget.blur();
-        view.focus();
+        view.focus(direction);
         this.activeWidget = view;
     },
     index: 0,//index in the parent
-    focus: function(){},
-    blur: function(){},
+    focus: function(direction){
+        if(this.activeWidget.isDisabled()){
+            if(direction == 'next' || !direction){
+                return this.nextWidget();
+            }
+            else if(direction == 'prev'){
+                return this.prevWidget();
+            }
+        }
+        else{
+            this.focusWidget(this.activeWidget, direction);
+        }
+    },
+    blur: function(){
+        this.activeWidget.blur();
+    },
     name: "NoName",
     log: function(){
         var _this = this;
@@ -244,11 +297,20 @@ app.Widget = Backbone.View.extend({
 });
 
 /* scene with widgets */
-app.widgetScene = app.Widget;
+app.widgetScene = app.Widget.extend({
+    init: function(){
+        //THIS IS CONSTRUCTOR!
+    }
+});
 
 /* storage */
 app.storage = {
     initialize: function(){
         app.log('not storage!');
     }
+};
+
+/* device id */
+app.getDeviceId = function(){
+    return this.deviceId;
 };
