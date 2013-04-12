@@ -47,7 +47,9 @@ app.start = function()
 app.showScene = function(){
     if(this.scene){
         //remember current
-        this.history.push(this.scene);
+        if(this.scene.isHistored()){
+            this.history.push(this.scene);
+        }
     }
 
     var view = this._showScene.apply(this, arguments);
@@ -300,8 +302,12 @@ app.Widget = Backbone.View.extend({
 
 /* scene with widgets */
 app.widgetScene = app.Widget.extend({
+    histored: true,
     init: function(){
         //THIS IS CONSTRUCTOR!
+    },
+    isHistored: function(){
+        return this.histored;
     }
 });
 
