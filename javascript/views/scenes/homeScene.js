@@ -4,14 +4,15 @@
 
             var _this = this;
 
-            this.initModels();
+            this.diafilmCollection = this.options.diafilmCollection;
+            this.categoryCollection = this.diafilmCollection.categoryCollection;
 
             //categories
             this.categories = new app.widgets.listWidget({
                 collection: this.categoryCollection
             });
+            this.categories.count = this.categoryCollection.length;
             this.addWidget(this.categories);
-            this.diafilmCollection.fetch();
 
             this.categories.on("key_enter", function(){
                  app.showScene("diafilmListScene", {
@@ -68,16 +69,9 @@
             this.banner = new app.widgets.bannerWidget();
             this.addWidget(this.banner);
 
-
-            this.diafilmCollection.on('reset', function(){
-                app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
-
-                _this.categories.count = _this.categoryCollection.length;
-
-                _this.render();
-            });
-
             this.setActiveWidget(this.categories);
+
+            _this.render();
         },
         initModels: function(){
             this.categoryCollection = new app.models.categoryCollection();

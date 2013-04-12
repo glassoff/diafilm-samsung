@@ -3,7 +3,7 @@
     app.start = function(){
         alert('start app...');
 
-        this.showScene('homeScene');
+        this.showScene('splashScene');
     }
 
     app.getThumbUrl = function(imgSrc){

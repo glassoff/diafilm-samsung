@@ -270,7 +270,7 @@ app.Widget = Backbone.View.extend({
     },
     index: 0,//index in the parent
     focus: function(direction){
-        if(this.activeWidget.isDisabled()){
+        if(this.activeWidget && this.activeWidget.isDisabled()){
             if(direction == 'next' || !direction){
                 return this.nextWidget();
             }
@@ -278,12 +278,14 @@ app.Widget = Backbone.View.extend({
                 return this.prevWidget();
             }
         }
-        else{
+        else if(this.activeWidget){
             this.focusWidget(this.activeWidget, direction);
         }
     },
     blur: function(){
-        this.activeWidget.blur();
+        if(this.activeWidget){
+            this.activeWidget.blur();
+        }
     },
     name: "NoName",
     log: function(){
