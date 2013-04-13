@@ -1,6 +1,7 @@
 
 (function(){
     app.widgets.loaderWidget = app.Widget.extend({
+        disabled: true,
         initialize: function(){
             var _this = this;
 
