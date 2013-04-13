@@ -1,6 +1,7 @@
 
 (function(){
     app.widgets.listWidget = app.Widget.extend({
+        focused: false,
         initialize: function(){
             this.collection = this.options.collection;
             this.activeIndex = 0;
@@ -36,9 +37,11 @@
         count: 0,
         focus: function(){
             this.$el.find('[rel='+this.activeIndex+']').addClass('active');
+            this.focused = true;
         },
         blur: function(){
             this.$el.find('[rel='+this.activeIndex+']').removeClass('active');
+            this.focused = false;
         },
         tagName: 'ul',
         className: 'vList unstyled',
@@ -49,7 +52,7 @@
             this.collection.each(function(item, i){
                 var itemEl = $('<li>').text(item.get('title'));
                 itemEl.attr('rel', i);
-                if(i == _this.activeIndex){
+                if(_this.focused && i == _this.activeIndex){
                     itemEl.addClass('active');
                 }
                 $(_this.el).append(itemEl);
