@@ -112,11 +112,25 @@
         },
         up: function(){
             app.log('slides up')
-            this.activateTileOnIndex(this.activeTileIndex - this.cols);
+            var tileIndex = this.activeTileIndex - this.cols;
+
+            if(!this.tiles[tileIndex] || !this.isTileVisible(this.tiles[tileIndex])){
+                this.parent.trigger('prev_widget');
+                return;
+            }
+
+            this.activateTileOnIndex(tileIndex);
         },
         down: function(){
             app.log('slides down')
-            this.activateTileOnIndex(this.activeTileIndex + this.cols);
+            var tileIndex = this.activeTileIndex + this.cols;
+
+            if(!this.tiles[tileIndex] || !this.isTileVisible(this.tiles[tileIndex])){
+                this.parent.trigger('next_widget');
+                return;
+            }
+
+            this.activateTileOnIndex(tileIndex);
         },
 
         focus: function(){
