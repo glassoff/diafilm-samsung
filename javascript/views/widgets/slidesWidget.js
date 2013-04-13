@@ -145,7 +145,7 @@
                 }
             }
             var img = this.imagesLoader.get(this.images[index]);
-            return $('<div>').append($(img).css('height', this.height + 'px'));
+            return $('<div>').append($(img).css('height', this.height + 'px')).css('height', this.height + 'px');
         },
         render: function(){
             var _this = this;
