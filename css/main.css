@@ -165,7 +165,7 @@ body{
 /* splash */
 .splash{
     text-align: center;
-    padding-top: 250px;
+    padding-top: 200px;
 }
     .splash__img{
 
@@ -184,3 +184,28 @@ body{
     .splash__loader{
         margin: 20px 0 0 0;
     }
+    
+/* loader */
+.loader{
+    position: absolute;
+    top:45%;
+    left:45%;
+
+    text-align: center;
+
+    background: #1D1D1D;
+
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.opacityAll{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+
+    opacity: 0.65;
+}

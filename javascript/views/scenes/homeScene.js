@@ -15,6 +15,7 @@
             this.addWidget(this.categories);
 
             this.categories.on("key_enter", function(){
+                _this.showLoader();
                  app.showScene("diafilmListScene", {
                      diafilmCollection: _this.diafilmCollection.where({cat: _this.categoryCollection.at(_this.categories.activeIndex).get('title')}),
                      category: _this.categoryCollection.at(_this.categories.activeIndex)
@@ -60,6 +61,7 @@
             this.addWidget(this.latests);
 
             this.latests.on("key_enter", function(){
+                _this.showLoader();
                 app.showScene("diafilmScene", {
                     diafilm: _this.diafilmCollection.at(_this.latests.getActiveIndex())
                 });
@@ -71,6 +73,10 @@
 
             this.setActiveWidget(this.categories);
 
+            //loader
+            this.loader = new app.widgets.loaderWidget();
+            this.addWidget(this.loader);
+
             _this.render();
         },
         initModels: function(){
@@ -78,10 +84,17 @@
             this.diafilmCollection = new app.models.diafilmCollection();
             this.diafilmCollection.categoryCollection = this.categoryCollection;
         },
-        /*blur: function(){
-            this.banner.deactivate();
+        blur: function(){
+            //this.banner.deactivate();
             this.activeWidget.blur();
-        },*/
+            if(this.prevWidget){
+                this.activeWidget = this.prevWidget;
+            }
+        },
+        showLoader: function(){
+            this.prevWidget = this.activeWidget;
+            this.focusWidget(this.loader);
+        },
         render: function(){
             alert('render')
             $(this.el).html(new EJS({url: 'javascript/templates/home.ejs'}).render({
@@ -92,6 +105,8 @@
 
             //$('#bottomBanner', this.el).append(this.banner.render().el);
             this.banner.render();
+
+            $('#loaderWidget', this.el).append(this.loader.render().el);
 
             this.trigger("rendered");
 
