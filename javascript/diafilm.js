@@ -71,6 +71,8 @@
             this.prevWidget = null;
             this.blured = true;
 
+            this.hiddenLoader = true;
+
             this.on("focused", function(){
                 _this.blured = false;
             });
@@ -85,6 +87,7 @@
         },
         blur: function(){
             this.blured = true;
+            this.hiddenLoader = true;
 
             this.activeWidget.blur();
             if(this.prevWidget){
@@ -94,15 +97,17 @@
         showLoader: function(){
             var _this = this;
 
+            this.hiddenLoader = false;
             setTimeout(function(){
-                if(!_this.blured){
+                if(!_this.blured && !_this.hiddenLoader){
                     _this.prevWidget = _this.activeWidget;
                     _this.focusWidget(_this.loader);
                 }
             }, 300);
         },
         hideLoader: function(){
-            app.log('HIDE LOADER')
+            app.log('hide loader')
+            this.hiddenLoader = true;
             this.focusWidget(this.prevWidget);
         }
     });
