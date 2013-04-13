@@ -84,6 +84,23 @@
             }
 
             this.sliding = true;
+
+            var nextUrl = this.images[this.currentIndex + 1];
+            if(!this.imagesLoader.isLoaded(nextUrl)){
+                app.log('not loaded ', nextUrl)
+                this.parent.showLoader();
+
+                $(this.imagesLoader.get(nextUrl)).load(function(){
+                    _this.parent.hideLoader();
+
+                    _this.sliding = false;
+                    _this.next();
+                });
+
+                return false;
+            }
+
+
             this.currentSlide.animate({
                 'margin-top': '-=' + this.height + 'px'
             },{
