@@ -54,4 +54,46 @@
 
     app.imgLoader = imgLoader;
 
+    //scene with loader
+    app.withLoaderScene = app.widgetScene.extend({
+        initLoader: function(){
+            var _this = this;
+            this.prevWidget = null;
+            this.blured = true;
+
+            this.on("focused", function(){
+                _this.blured = false;
+            });
+
+            //loader
+            this.loader = new app.widgets.loaderWidget();
+            this.addWidget(this.loader);
+
+            this.on("rendered", function(){
+                $('#loaderWidget', _this.el).append(_this.loader.render().el);
+            });
+        },
+        blur: function(){
+            this.blured = true;
+
+            this.activeWidget.blur();
+            if(this.prevWidget){
+                this.activeWidget = this.prevWidget;
+            }
+        },
+        showLoader: function(){
+            var _this = this;
+
+            setTimeout(function(){
+                if(!_this.blured){
+                    _this.prevWidget = _this.activeWidget;
+                    _this.focusWidget(_this.loader);
+                }
+            }, 300);
+
+
+        }
+    });
+
+
 })();

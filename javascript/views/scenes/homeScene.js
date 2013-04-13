@@ -1,6 +1,8 @@
 (function(){
-    app.scenes.homeScene = app.widgetScene.extend({
+    app.scenes.homeScene = app.withLoaderScene.extend({
         init: function(){
+
+            this.initLoader();
 
             var _this = this;
 
@@ -73,27 +75,12 @@
 
             this.setActiveWidget(this.categories);
 
-            //loader
-            this.loader = new app.widgets.loaderWidget();
-            this.addWidget(this.loader);
-
             _this.render();
         },
         initModels: function(){
             this.categoryCollection = new app.models.categoryCollection();
             this.diafilmCollection = new app.models.diafilmCollection();
             this.diafilmCollection.categoryCollection = this.categoryCollection;
-        },
-        blur: function(){
-            //this.banner.deactivate();
-            this.activeWidget.blur();
-            if(this.prevWidget){
-                this.activeWidget = this.prevWidget;
-            }
-        },
-        showLoader: function(){
-            this.prevWidget = this.activeWidget;
-            this.focusWidget(this.loader);
         },
         render: function(){
             alert('render')
@@ -105,8 +92,6 @@
 
             //$('#bottomBanner', this.el).append(this.banner.render().el);
             this.banner.render();
-
-            $('#loaderWidget', this.el).append(this.loader.render().el);
 
             this.trigger("rendered");
 

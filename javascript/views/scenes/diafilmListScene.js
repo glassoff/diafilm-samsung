@@ -1,6 +1,8 @@
 (function(){
-    app.scenes.diafilmListScene = app.widgetScene.extend({
+    app.scenes.diafilmListScene = app.withLoaderScene.extend({
         init: function(){
+
+            this.initLoader();
 
             var _this = this;
 
@@ -76,22 +78,7 @@
             this.banner = new app.widgets.bannerWidget();
             this.addWidget(this.banner);
 
-            //loader
-            this.loader = new app.widgets.loaderWidget();
-            this.addWidget(this.loader);
-
             this.setActiveWidget(this.diafilms);
-        },
-        blur: function(){
-            //this.banner.deactivate();
-            this.activeWidget.blur();
-            if(this.prevWidget){
-                this.activeWidget = this.prevWidget;
-            }
-        },
-        showLoader: function(){
-            this.prevWidget = this.activeWidget;
-            this.focusWidget(this.loader);
         },
         render: function(){
             $(this.el).html(new EJS({url: 'javascript/templates/diafilmList.ejs'}).render({
@@ -100,8 +87,6 @@
             $('#diafilmsWidget', this.el).append(this.diafilms.render().el);
 
             this.banner.render();
-
-            $('#loaderWidget', this.el).append(this.loader.render().el);
 
             this.trigger("rendered");
 

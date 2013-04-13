@@ -2,9 +2,7 @@
 (function(){
     app.widgets.loaderWidget = app.Widget.extend({
         initialize: function(){
-
             var _this = this;
-
 
             this.$el.hide();
         },

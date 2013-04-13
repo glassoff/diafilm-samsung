@@ -283,11 +283,14 @@ app.Widget = Backbone.View.extend({
         else if(this.activeWidget){
             this.focusWidget(this.activeWidget, direction);
         }
+
+        this.trigger("focused");
     },
     blur: function(){
         if(this.activeWidget){
             this.activeWidget.blur();
         }
+        this.trigger("blured");
     },
     name: "NoName",
     log: function(){

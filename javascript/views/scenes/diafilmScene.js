@@ -1,6 +1,8 @@
 (function(){
-    app.scenes.diafilmScene = app.widgetScene.extend({
+    app.scenes.diafilmScene = app.withLoaderScene.extend({
         init: function(){
+
+            this.initLoader();
 
             var _this = this;
 
