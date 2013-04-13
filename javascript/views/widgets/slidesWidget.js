@@ -89,6 +89,7 @@
             if(!this.imagesLoader.isLoaded(nextUrl)){
                 app.log('not loaded ', nextUrl)
                 this.parent.showLoader();
+                app.blockReturn = false;
 
                 $(this.imagesLoader.get(nextUrl)).load(function(){
                     _this.parent.hideLoader();
