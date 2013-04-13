@@ -16,7 +16,8 @@ var app = {
     scenes: {},
     widgets: {},
     scene: null, //active scene
-    config: {}
+    config: {},
+    blockReturn: false
 }
 
 _.extend(app, Backbone.Events);
@@ -26,6 +27,11 @@ app.initialize = function(){
 
     alert('app init...')
     this.on('key_return', function(){
+        if(_this.blockReturn){
+            app.log('blocked return');
+            _this.trigger('app.blockexit');
+            return false;
+        }
         alert('app return');
         if (app.history.back()){
             _this.trigger('app.blockexit');

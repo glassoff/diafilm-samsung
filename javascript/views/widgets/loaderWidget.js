@@ -8,9 +8,11 @@
             this.$el.hide();
         },
         focus: function(){
+            app.blockReturn = true;
             this.$el.show();
         },
         blur: function(){
+            app.blockReturn = false;
             this.$el.hide();
         },
         render: function(){
