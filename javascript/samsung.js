@@ -139,7 +139,7 @@
         }
     }
 
-    if(app.config.debug){
+    if(app.config.screenDebug){
         var nativeAlert = window.alert;
         window.alert = function(text){
             $('#debug').text(text);
