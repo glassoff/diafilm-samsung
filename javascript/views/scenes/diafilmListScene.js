@@ -10,9 +10,9 @@
             this.category = this.options.category;
 
             this.diafilms = new app.widgets.tilesWidget({
-                tileWidth: 160,
-                tileHeight: 160,
-                rows: 3
+                tileWidth: 240,
+                tileHeight: 250,
+                rows: 2
             });
 
             var images = new app.imgLoader();
@@ -38,17 +38,21 @@
                 }
 
                 var imgSrc = _this.collection[index].get('img');
-                var imgUrl = app.getThumbUrl(imgSrc);
+                var imgUrl = app.getThumbUrl(imgSrc, "samsung-tv-medium");
 
                 var html = $(
                     '<div>'+
                         '<div class="opacity"></div>'+
                         '<div class="img"></div>'+
-                        '<div class="title">'+item.get('title')+'</div>'+
+                        '<div class="btm">'+
+                            '<div class="title">'+item.get('title')+'</div>'+
+                        '</div>'+
                     '</div>'
                 );
 
                 var img = images.get(imgUrl);
+                img.width = 240;
+                img.height = 208;
 
                 for(var i = index; i < index + 6; i++){
                     if(_this.collection[i]){

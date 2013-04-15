@@ -36,27 +36,16 @@
 
                 var item = _this.diafilmCollection.at(index);
 
-                var imgSrc = item.get('img');
-                var parts = imgSrc.match(/^http:\/\/diafilmy.su\/uploads\/(.*)\.(.*?)$/);
-
-                var thumbType = 'samsung-tv';
-
-                var imgUrl = "http://diafilmy.su/thumbs/" + parts[1] + '-thumb-' + thumbType + '.' + parts[2];
-                //app.log(imgSrc);
+                var imgUrl = app.getThumbUrl(item.get('img'), "samsung-tv-small");
 
                 var html = $(
-                    '<div>'+
+                    '<div class="small_tiles">'+
                         '<div class="opacity"></div>'+
                         '<img width="150" src="'+imgUrl+'"/>'+
                         '<div class="title">'+item.get('title')+'</div>'+
-                        '</div>'
+                    '</div>'
                 );
 
-                /*var img = document.createElement("img");
-                 img.src = imgSrc;
-                 //img.width = 160;
-
-                 var html = img;*/
                 return html;
             };
 

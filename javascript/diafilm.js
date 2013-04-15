@@ -6,9 +6,9 @@
         this.showScene('splashScene');
     }
 
-    app.getThumbUrl = function(imgSrc){
+    app.getThumbUrl = function(imgSrc, type){
         var parts = imgSrc.match(/^http:\/\/diafilmy.su\/uploads\/(.*)\.(.*?)$/);
-        var thumbType = 'samsung-tv';
+        var thumbType = type || 'samsung-tv';
 
         var imgUrl = "http://diafilmy.su/thumbs/" + parts[1] + '-thumb-' + thumbType + '.' + parts[2];
 
