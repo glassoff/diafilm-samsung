@@ -39,10 +39,10 @@
                 var imgUrl = app.getThumbUrl(item.get('img'), "samsung-tv-small");
 
                 var html = $(
-                    '<div class="small_tiles">'+
+                    '<div>'+
                         '<div class="opacity"></div>'+
                         '<img width="150" src="'+imgUrl+'"/>'+
-                        '<div class="title">'+item.get('title')+'</div>'+
+                        '<div class="title_small">'+item.get('title')+'</div>'+
                     '</div>'
                 );
 
