@@ -18,10 +18,10 @@
             var images = new app.imgLoader();
 
             images.controlLoad = true;
-            for(var i = 0; i < 24; i++){
+            for(var i = 0; i < 12; i++){
                 if(_this.collection[i]){
                     var imgUrl = _this.collection[i].get('img');
-                    images.add(app.getThumbUrl(imgUrl));
+                    images.add(app.getThumbUrl(imgUrl, "samsung-tv-medium"));
                 }
             }
 
@@ -54,10 +54,10 @@
                 img.width = 240;
                 img.height = 208;
 
-                for(var i = index; i < index + 6; i++){
+                for(var i = index; i < index + 4; i++){
                     if(_this.collection[i]){
                         var imgUrl = _this.collection[i].get('img');
-                        images.add(app.getThumbUrl(imgUrl));
+                        images.add(app.getThumbUrl(imgUrl, "samsung-tv-medium"));
                     }
                 }
 

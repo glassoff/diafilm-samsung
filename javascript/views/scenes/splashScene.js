@@ -14,11 +14,27 @@
             this.diafilmCollection.on('reset', function(){
                 app.log('COUNT', _this.diafilmCollection.length, _this.categoryCollection.length)
 
-                setTimeout(function(){
-                    app.showScene("homeScene", {
-                        diafilmCollection: _this.diafilmCollection
-                    });
-                }, 1000);
+                var images = new app.imgLoader();
+
+                images.controlLoad = true;
+                for(var i = 0; i < 12; i++){
+                    if(_this.diafilmCollection.at(i)){
+                        var imgUrl = _this.diafilmCollection.at(i).get('img');
+                        images.add(app.getThumbUrl(imgUrl, "samsung-tv-small"));
+                    }
+                }
+
+                images.onLoad = function(){
+                    images.controlLoad = false;
+
+                    //go
+                    setTimeout(function(){
+                        app.showScene("homeScene", {
+                            diafilmCollection: _this.diafilmCollection
+                        });
+                    }, 1000);
+                };
+
 
             });
         },
