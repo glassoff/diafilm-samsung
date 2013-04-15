@@ -88,8 +88,7 @@
             var nextUrl = this.images[this.currentIndex + 1];
             if(!this.imagesLoader.isLoaded(nextUrl)){
                 app.log('not loaded ', nextUrl)
-                this.parent.showLoader();
-                app.blockReturn = false;
+                this.parent.showLoader(true);
 
                 $(this.imagesLoader.get(nextUrl)).load(function(){
                     _this.parent.hideLoader();

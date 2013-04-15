@@ -94,7 +94,7 @@
                 this.activeWidget = this.prevWidget;
             }
         },
-        showLoader: function(){
+        showLoader: function(notBlockReturn){
             var _this = this;
 
             this.hiddenLoader = false;
@@ -102,6 +102,10 @@
                 if(!_this.blured && !_this.hiddenLoader){
                     _this.prevWidget = _this.activeWidget;
                     _this.focusWidget(_this.loader);
+
+                    if(notBlockReturn){
+                        app.blockReturn = false;
+                    }
                 }
             }, 300);
         },

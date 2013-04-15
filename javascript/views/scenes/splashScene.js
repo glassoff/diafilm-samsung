@@ -32,7 +32,7 @@
                         app.showScene("homeScene", {
                             diafilmCollection: _this.diafilmCollection
                         });
-                    }, 1000);
+                    }, 500);
                 };
 
 
