@@ -17,10 +17,24 @@
             this.addWidget(this.categories);
 
             this.categories.on("key_enter", function(){
+                var categoryDiafilms = [];
+                var category = _this.categoryCollection.at(_this.categories.activeIndex);
+                var categoryName = category.get('title');
+
+                categoryDiafilms = _this.diafilmCollection.filter(function(model) {
+                    var cats = model.get('cat');
+
+                    if(_.indexOf(cats, categoryName) >= 0){
+                        return true;
+                    }
+
+                    return false;
+                });
+
                 _this.showLoader();
                  app.showScene("diafilmListScene", {
-                     diafilmCollection: _this.diafilmCollection.where({cat: _this.categoryCollection.at(_this.categories.activeIndex).get('title')}),
-                     category: _this.categoryCollection.at(_this.categories.activeIndex)
+                     diafilmCollection: categoryDiafilms,
+                     category: category
                  });
              });
 

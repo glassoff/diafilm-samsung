@@ -56,9 +56,16 @@
                     var name, value;
                     name = this.tagName;
                     value = this.textContent;
-                    item[name] = value;//TODO cat array
+
                     if(name == 'cat'){
+                        if(!item[name]){
+                            item[name] = [];
+                        }
+                        item[name].push(value);
                         _this.categoryCollection.add({'title': value});
+                    }
+                    else{
+                        item[name] = value;
                     }
 
                 });
