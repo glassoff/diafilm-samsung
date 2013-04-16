@@ -44,6 +44,7 @@
                     '<div>'+
                         '<div class="opacity"></div>'+
                         '<div class="img"></div>'+
+                        '<div class="year">'+item.get('year')+' г.</div>'+
                         '<div class="btm">'+
                             '<div class="title">'+item.get('title')+'</div>'+
                         '</div>'+
