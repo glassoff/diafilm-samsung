@@ -29,14 +29,15 @@ body{
 }
 
 .vList{
-
+    width: 560px;
+    overflow: hidden;
 }
 .vList li{
     font-size: 25px;
     margin: 10px 0;
 }
 .vList li.active{
-    font-size: 32px;
+    font-size: 33px;
     color: #d3d3d3;
 }
 
@@ -226,6 +227,19 @@ body{
     .splash__loader{
         margin: 20px 0 0 0;
     }
+
+    .splash__info{
+        position: absolute;
+        bottom: 5px;
+        right: 12px;
+
+        font-size: 16px;
+        text-align: right;
+
+    }
+        .splash__info p{
+            margin-bottom: 3px;
+        }
     
 /* loader */
 .loader{
