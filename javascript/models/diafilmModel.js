@@ -62,7 +62,10 @@
                             item[name] = [];
                         }
                         item[name].push(value);
-                        _this.categoryCollection.add({'title': value});
+                        if(!_this.categoryCollection.get(value)){
+                            _this.categoryCollection.add({'title': value}, {silent: true});
+                        }
+
                     }
                     else{
                         item[name] = value;
@@ -71,7 +74,7 @@
                 });
                 item['col'] = true;
                 diafilms.push(item);
-            });
+            });app.log('PARSED!')
             return diafilms;
         },
         fetch: function (options) {
