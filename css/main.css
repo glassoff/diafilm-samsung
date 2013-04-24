@@ -4,14 +4,17 @@ body{
 
     width: 1280px;
     height: 720px;
-    padding: 0;
-    margin: 0;
 
     overflow: hidden;
 }
 
 #container{
-    position: relative;
+    background: #1D1D1D;
+    color: #fff;
+
+    position: absolute;
+    top:0;
+    left:0;
 
     width: 1280px;
     height: 720px;
@@ -20,7 +23,6 @@ body{
 
     overflow: hidden;
 
-    /*border: 1px solid #fff;*/
 }
 
 /* home */
