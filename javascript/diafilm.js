@@ -38,7 +38,6 @@
         $(img).load(function(){
             _this.loaded++;
             _this.images[url].loaded = true;
-            //app.log('loaded ', url)
             //app.log('load ', _this.loaded, ' from ', _.size(_this.images))
             if(_this.controlLoad && _this.loaded >= _.size(_this.images)){
                 app.log('IMAGES LOAD! ', _this.loaded);
@@ -51,7 +50,16 @@
         if(!this.images[url]){
             this.add(url);
         }
+        else if(!this.images[url].img){
+            this.images[url].img = this.createImg(url);
+        }
         return this.images[url].img;
+    };
+    imgLoader.prototype.delete = function(url){
+        if(url){
+            this.images[url].img = null;
+            this.loaded--;
+        }
     };
     imgLoader.prototype.isLoaded = function(url){
         if(this.images[url]){
@@ -93,6 +101,7 @@
             if(this.prevWidget){
                 this.activeWidget = this.prevWidget;
             }
+            this.trigger("blured");
         },
         showLoader: function(notBlockReturn){
             var _this = this;

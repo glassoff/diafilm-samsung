@@ -10,7 +10,7 @@ $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError){
     app.log(thrownError);
 });
 
-/** app **/
+                                                    /** app **/
 var app = {
     models: {},
     scenes: {},
@@ -33,10 +33,13 @@ app.initialize = function(){
             return false;
         }
         alert('app return');
-        if (app.history.back()){
+        if (app.history.isBack()){
+            alert('block exit');
             _this.trigger('app.blockexit');
+            app.history.back()
         }
         else{
+            alert('app exit!');
             _this.trigger('app.exit');
         }
     });
@@ -128,10 +131,13 @@ app.history = {
             return true;
         }
         return false;
+    },
+    isBack: function(){
+        return this.items.length > 0;
     }
 };
 
-/* view with widgets */
+                                                    /* view with widgets */
 app.Widget = Backbone.View.extend({
     disabled: false,
     initialize: function(){
@@ -306,10 +312,19 @@ app.Widget = Backbone.View.extend({
             args[i] = '[' + _this.name + ']' + ': ' + arg;
         });
         app.log.apply(app, args);
+    },
+    suspend: function(){
+        //TODO
+    },
+    restore: function(){
+        //TODO
+    },
+    terminate: function(){
+        //TODO
     }
 });
 
-/* scene with widgets */
+                                                       /* scene with widgets */
 app.widgetScene = app.Widget.extend({
     histored: true,
     init: function(){
@@ -320,7 +335,7 @@ app.widgetScene = app.Widget.extend({
     }
 });
 
-/* storage */
+                                        /* storage */
 app.storage = {
     initialize: function(){
         app.log('not storage!');

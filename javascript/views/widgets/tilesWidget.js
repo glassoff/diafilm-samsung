@@ -5,9 +5,6 @@
             return 'Tile ' + index;
         },
         initialize: function(){
-
-            this.cache = [];
-
             this.tileWidth = this.options.tileWidth || this.tileWidth;
             this.tileHeight = this.options.tileHeight || this.tileHeight;
             this.rows = this.options.rows || this.rows;
@@ -254,12 +251,7 @@
                 tileEl.css('visibility', 'visible');
 
                 var index = _this.getTileIndex(tile);
-
-                if(!_this.cache[index]){
-                    _this.cache[index] = _this.getTileOnIndex(index);
-                }
-
-                var html = _this.cache[index];
+                var html = _this.getTileOnIndex(index, tileEl);
 
                 if(!html){
                     tileEl.css('visibility', 'hidden');
@@ -271,12 +263,6 @@
 
                 tileEl.html(html);
 
-                /*var el = tileEl.get(0);
-                if(el.firstChild){
-                    var a = el.removeChild(el.firstChild);
-                }
-
-                el.appendChild(html)*/
             });
         },
         tagName: 'div',

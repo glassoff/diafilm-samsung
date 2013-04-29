@@ -49,7 +49,16 @@
                 duration: 1000,
                 complete: function(){
 
-                    _this.nextSlide.remove();
+                    if(_this.el.deleteChild){
+                        _this.el.deleteChild(_this.nextSlide.get(0));
+                    }
+                    else{
+                        _this.el.removeChild(_this.nextSlide.get(0));
+                    }
+                    _this.imagesLoader.delete(_this.images[_this.currentIndex + 1]);
+                    //app.log('DELETED '+(_this.currentIndex + 1))
+
+                    //_this.nextSlide.remove();
                     _this.nextSlide = _this.currentSlide;
 
                     _this.currentSlide = _this.previousSlide;
@@ -106,8 +115,15 @@
             },{
                 duration: 1000,
                 complete: function(){
-                    if(_this.previousSlide){
-                        _this.previousSlide.remove();
+                    if(_this.previousSlide && _this.currentIndex > 0){
+                        if(_this.el.deleteChild){
+                            _this.el.deleteChild(_this.previousSlide.get(0));
+                        }
+                        else{
+                            _this.el.removeChild(_this.previousSlide.get(0));
+                        }
+                        _this.imagesLoader.delete(_this.images[_this.currentIndex - 1]);
+                        //app.log('DELETED '+(_this.currentIndex - 1))
                     }
 
                     _this.previousSlide = _this.currentSlide;
@@ -138,14 +154,17 @@
         },
         tagName: 'div',
         className: 'slide',
-        slideContent: function(index){
-            for(var i = index; i < index + 3; i++){
+        slideContent: function(index){app.log('GET SLIDE: '+index)
+            /*for(var i = index; i < index + 3; i++){
                 if(this.images[i]){
                     this.imagesLoader.add(this.images[i]);
                 }
-            }
+            }*/
             var img = this.imagesLoader.get(this.images[index]);
-            return $('<div>').append($(img).css('height', this.height + 'px')).css('height', this.height + 'px');
+
+            var slide = $('<div style="position: relative;">').append($(img).css('height', this.height + 'px')).css('height', this.height + 'px');
+            slide.append($('<div style="position: absolute; color:#fff;top:0;left:0;">').text(index));
+            return slide;
         },
         render: function(){
             var _this = this;
