@@ -15,6 +15,8 @@
         return imgUrl;
     }
 
+    app.loadedImages = [];
+
     //image loader
     var imgLoader = function(){
         this.images = {};//{img : ..., loaded: false}
@@ -30,27 +32,38 @@
             this.images[url].img = this.createImg(url);
         }
     };
-    imgLoader.prototype.createImg = function(url){
+    imgLoader.prototype.createImg = function(url){app.log('create '+url)
         var _this = this;
 
         var img = document.createElement("img");
         img.src = url;
-        $(img).load(function(){
+
+        if(_.indexOf(app.loadedImages, url) >= 0){
+            onLoad();
+        }
+        else{
+            $(img).load(onLoad);
+        }
+
+        function onLoad(){
+            app.log('loaded ', url)
+            app.loadedImages.push(url);
             _this.loaded++;
             _this.images[url].loaded = true;
-            //app.log('load ', _this.loaded, ' from ', _.size(_this.images))
+            app.log('load '+ _this.loaded+ ' from '+ _.size(_this.images))
             if(_this.controlLoad && _this.loaded >= _.size(_this.images)){
                 app.log('IMAGES LOAD! ', _this.loaded);
                 _this.onLoad();
             }
-        });
+        }
+
         return img;
     };
     imgLoader.prototype.get = function(url){
-        if(!this.images[url]){
+        if(!this.images[url]){app.log('add')
             this.add(url);
         }
-        else if(!this.images[url].img){
+        else if(!this.images[url].img){app.log('add after delete')
             this.images[url].img = this.createImg(url);
         }
         return this.images[url].img;

@@ -18,13 +18,24 @@
             var images = new app.imgLoader();
             this.images = images;
 
-            images.controlLoad = true;
-            for(var i = 0; i < 12; i++){
-                if(_this.collection[i]){
-                    var imgUrl = _this.collection[i].get('img');
-                    images.add(app.getThumbUrl(imgUrl, "samsung-tv-medium"));
-                }
-            }
+            this.addWidget(this.diafilms);
+
+            app.log('COUNT', _this.collection.length)
+            _this.diafilms.count = _this.collection.length;
+
+            this.diafilms.on("key_enter", function(){
+                _this.showLoader();
+                 app.showScene("diafilmScene", {
+                    diafilm: _this.collection[_this.diafilms.getActiveIndex()]
+                 });
+             });
+
+            //banner
+            this.banner = new app.widgets.bannerWidget();
+            this.addWidget(this.banner);
+
+            this.setActiveWidget(this.diafilms);
+
 
             images.onLoad = function(){
                 images.controlLoad = false;
@@ -59,9 +70,9 @@
                         '<div class="img"></div>'+
                         '<div class="year">'+item.get('year')+' г.</div>'+
                         '<div class="btm">'+
-                            '<div class="title">'+item.get('title')+'</div>'+
+                        '<div class="title">'+item.get('title')+'</div>'+
                         '</div>'+
-                    '</div>'
+                        '</div>'
                 );
 
                 var img = images.get(imgUrl);
@@ -80,24 +91,14 @@
                 return html;
             };
 
-            this.addWidget(this.diafilms);
 
-            app.log('COUNT', _this.collection.length)
-            _this.diafilms.count = _this.collection.length;
-
-            this.diafilms.on("key_enter", function(){
-                _this.showLoader();
-                 app.showScene("diafilmScene", {
-                    diafilm: _this.collection[_this.diafilms.getActiveIndex()]
-                 });
-             });
-
-            //banner
-            this.banner = new app.widgets.bannerWidget();
-            this.addWidget(this.banner);
-
-            this.setActiveWidget(this.diafilms);
-
+            images.controlLoad = true;
+            for(var i = 0; i < 12; i++){
+                if(_this.collection[i]){
+                    var imgUrl = _this.collection[i].get('img');
+                    images.add(app.getThumbUrl(imgUrl, "samsung-tv-medium"));
+                }
+            }
 
             this.on("blured", function(){
                 _.each(_this.diafilms.tiles, function(tile, i){

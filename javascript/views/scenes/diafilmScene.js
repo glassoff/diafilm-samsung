@@ -16,12 +16,6 @@
             this.diafilm.fetch({
                 success: function(){
                     var images = _this.diafilm.get('imgs');
-                    imagesLoader.controlLoad = true;
-                    for(var i = 0; i < 2; i++){
-                        if(images[i]){
-                            imagesLoader.add(images[i]);
-                        }
-                    }
 
                     imagesLoader.onLoad = function(){
                         imagesLoader.controlLoad = false;
@@ -32,6 +26,12 @@
                         _this.render();
                     };
 
+                    imagesLoader.controlLoad = true;
+                    for(var i = 0; i < 2; i++){
+                        if(images[i]){
+                            imagesLoader.add(images[i]);
+                        }
+                    }
                 }
             });
 
@@ -48,7 +48,7 @@
                     _this.slides.imagesLoader.delete(_this.slides.images[_this.slides.currentIndex - 1]);
                 }
                 if(_this.slides.el.deleteChild){
-                    _this.slides.el.deleteChild(_this.slides.currentSlide.get(0));
+                    _this.slides.el.deleteChild(_this.slides.currentSlide.get(0));app.log('del current')
                 }
                 else{
                     _this.slides.el.removeChild(_this.slides.currentSlide.get(0));
