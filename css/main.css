@@ -23,6 +23,7 @@ body{
 
     overflow: hidden;
 
+    line-height: 1;
 }
 
 /* home */
@@ -35,8 +36,11 @@ body{
     overflow: hidden;
 }
 .vList li{
+    display: block;
+    height:33px;
+    line-height:33px;
     font-size: 25px;
-    margin: 10px 0;
+    margin: 0px 0;
 }
 .vList li.active{
     font-size: 33px;
@@ -224,7 +228,7 @@ body{
     }
     .splash__slogan{
         font-size: 25px;
-        margin: 20px 0 0 0;
+        margin: 10px 0 0 0;
     }
     .splash__loader{
         margin: 20px 0 0 0;
