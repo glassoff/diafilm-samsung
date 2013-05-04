@@ -55,13 +55,15 @@
                 }
                 _this.slides.imagesLoader.delete(_this.slides.images[_this.slides.currentIndex]);
 
-                if(_this.slides.el.deleteChild){
-                    _this.slides.el.deleteChild(_this.slides.nextSlide.get(0));
+                if(_this.slides.nextSlide){
+                    if(_this.slides.el.deleteChild){
+                        _this.slides.el.deleteChild(_this.slides.nextSlide.get(0));
+                    }
+                    else{
+                        _this.slides.el.removeChild(_this.slides.nextSlide.get(0));
+                    }
+                    _this.slides.imagesLoader.delete(_this.slides.images[_this.slides.currentIndex + 1]);
                 }
-                else{
-                    _this.slides.el.removeChild(_this.slides.nextSlide.get(0));
-                }
-                _this.slides.imagesLoader.delete(_this.slides.images[_this.slides.currentIndex + 1]);
             });
 
         },

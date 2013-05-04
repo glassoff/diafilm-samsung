@@ -49,16 +49,17 @@
                 duration: 1000,
                 complete: function(){
 
-                    if(_this.el.deleteChild){
-                        _this.el.deleteChild(_this.nextSlide.get(0));
+                    if(_this.nextSlide){
+                        if(_this.el.deleteChild){
+                            _this.el.deleteChild(_this.nextSlide.get(0));
+                        }
+                        else{
+                            _this.el.removeChild(_this.nextSlide.get(0));
+                        }
                     }
-                    else{
-                        _this.el.removeChild(_this.nextSlide.get(0));
-                    }
-                    _this.imagesLoader.delete(_this.images[_this.currentIndex + 1]);
-                    //app.log('DELETED '+(_this.currentIndex + 1))
 
-                    //_this.nextSlide.remove();
+                    _this.imagesLoader.delete(_this.images[_this.currentIndex + 1]);
+
                     _this.nextSlide = _this.currentSlide;
 
                     _this.currentSlide = _this.previousSlide;
@@ -123,7 +124,6 @@
                             _this.el.removeChild(_this.previousSlide.get(0));
                         }
                         _this.imagesLoader.delete(_this.images[_this.currentIndex - 1]);
-                        //app.log('DELETED '+(_this.currentIndex - 1))
                     }
 
                     _this.previousSlide = _this.currentSlide;
@@ -131,6 +131,7 @@
                     _this.currentSlide = _this.nextSlide;
                     _this.currentIndex++;
 
+                    _this.nextSlide = null;
                     if(_this.currentIndex < _this.images.length - 1){
                         _this.nextSlide = _this.slideContent(_this.currentIndex + 1);
 
@@ -163,7 +164,7 @@
             var img = this.imagesLoader.get(this.images[index]);
 
             var slide = $('<div style="position: relative;">').append($(img).css('height', this.height + 'px')).css('height', this.height + 'px');
-            slide.append($('<div style="position: absolute; color:#fff;top:0;left:0;">').text(index));
+//            slide.append($('<div style="position: absolute; color:#fff;top:0;left:0;">').text(index));
             return slide;
         },
         render: function(){
