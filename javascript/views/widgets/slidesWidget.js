@@ -110,6 +110,10 @@
                 return false;
             }
 
+            //hide helpbar
+            if($("#helpBar").is(":visible")){
+                $("#helpBar").slideUp( );
+            }
 
             this.currentSlide.animate({
                 'margin-top': '-=' + this.height + 'px'

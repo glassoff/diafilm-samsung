@@ -10,8 +10,8 @@
             this.category = this.options.category;
 
             this.diafilms = new app.widgets.tilesWidget({
-                tileWidth: 240,
-                tileHeight: 250,
+                tileWidth: 230,
+                tileHeight: 230,
                 rows: 2
             });
 
@@ -76,8 +76,8 @@
                 );
 
                 var img = images.get(imgUrl);
-                img.width = 240;
-                img.height = 208;
+                img.width = 230;
+                img.height = 190;
 
                 for(var i = index; i < index + 4; i++){
                     if(_this.collection[i]){

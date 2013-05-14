@@ -41,7 +41,7 @@
             //latests
             this.latests = new app.widgets.tilesWidget({
                 tileWidth: 150,
-                tileHeight: 150,
+                tileHeight: 140,
                 rows: 3,
                 cols: 4
             });
@@ -55,7 +55,7 @@
                 var html = $(
                     '<div>'+
                         '<div class="opacity"></div>'+
-                        '<img width="150" src="'+imgUrl+'"/>'+
+                        '<img width="150" height="140" src="'+imgUrl+'"/>'+
                         '<div class="title_small">'+item.get('title')+'</div>'+
                     '</div>'
                 );
