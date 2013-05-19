@@ -294,3 +294,13 @@ body{
     .helpbar img{
         vertical-align: middle;
     }
+
+/* modal */
+.modal{
+    border: 5px solid #ccc;
+    color:#000;
+
+    z-index: 9999;
+    position: relative;
+}
+

@@ -85,11 +85,11 @@
 
     app.imgLoader = imgLoader;
 
-    //scene with loader
+                                        /* scene with loader */
     app.withLoaderScene = app.widgetScene.extend({
         initLoader: function(){
             var _this = this;
-            this.prevWidget = null;
+            this.prevActiveWidget = null;
             this.blured = true;
 
             this.hiddenLoader = true;
@@ -111,7 +111,7 @@
             this.hiddenLoader = true;
 
             this.activeWidget.blur();
-            if(this.prevWidget){
+            if(this.prevActiveWidget){
                 this.activeWidget = this.prevWidget;
             }
             this.trigger("blured");
@@ -122,7 +122,7 @@
             this.hiddenLoader = false;
             setTimeout(function(){
                 if(!_this.blured && !_this.hiddenLoader){
-                    _this.prevWidget = _this.activeWidget;
+                    _this.prevActiveWidget = _this.activeWidget;
                     _this.focusWidget(_this.loader);
 
                     if(notBlockReturn){
@@ -134,7 +134,7 @@
         hideLoader: function(){
             app.log('hide loader')
             this.hiddenLoader = true;
-            this.focusWidget(this.prevWidget);
+            this.focusWidget(this.prevActiveWidget);
         }
     });
 

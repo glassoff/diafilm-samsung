@@ -7,6 +7,7 @@ $.ajaxSetup({
 
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError){
     alert('[ERROR] ajax error!');
+    app.trigger("error_ajax");
     app.log(thrownError);
 });
 
@@ -140,6 +141,7 @@ app.history = {
                                                     /* view with widgets */
 app.Widget = Backbone.View.extend({
     disabled: false,
+    switchLoop: 1,
     initialize: function(){
         this.initWidgets();
     },
@@ -208,16 +210,17 @@ app.Widget = Backbone.View.extend({
         var view;
 
         if(this.widgets.length){
-            view = this.widgets[this.activeWidget.index - 1];
+            view = this.widgets[this.activeWidget.index - this.switchLoop];
         }
 
         if(view && view.isDisabled()){
             view.log('disabled!')
-            if(this.widgets[this.activeWidget.index - 2]){
-                this.setActiveWidget(view);
+            if(this.widgets[this.activeWidget.index - this.switchLoop - 1]){
+                this.switchLoop++;
                 return this.prevWidget();
             }
             else{
+                this.switchLoop = 1;
                 if(this.parent){
                     this.log('to parent ' + this.parent.name)
                     this.parent.trigger("prev_widget");
@@ -225,6 +228,8 @@ app.Widget = Backbone.View.extend({
                 return;
             }
         }
+
+        this.switchLoop = 1;
 
         if(view){
             this.focusWidget(view, 'prev');
@@ -241,16 +246,17 @@ app.Widget = Backbone.View.extend({
         var view;
 
         if(this.widgets.length){
-            view = this.widgets[this.activeWidget.index + 1];
+            view = this.widgets[this.activeWidget.index + this.switchLoop];
         }
 
         if(view && view.isDisabled()){
             view.log('disabled!')
-            if(this.widgets[this.activeWidget.index + 2]){
-                this.setActiveWidget(view);
+            if(this.widgets[this.activeWidget.index + this.switchLoop + 1]){
+                this.switchLoop++;
                 return this.nextWidget();
             }
             else{
+                this.switchLoop = 1;
                 if(this.parent){
                     this.log('to parent ' + this.parent.name)
                     this.parent.trigger("next_widget");
@@ -258,6 +264,8 @@ app.Widget = Backbone.View.extend({
                 return;
             }
         }
+
+        this.switchLoop = 1;
 
         if(view){
             this.focusWidget(view, 'next');
@@ -278,7 +286,9 @@ app.Widget = Backbone.View.extend({
         if(!view){
             return;
         }
-        this.activeWidget.blur();
+//        if(this.activeWidget && !this.activeWidget.isDisabled()){
+            this.activeWidget.blur();
+//        }
         view.focus(direction);
         this.activeWidget = view;
     },
