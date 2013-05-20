@@ -101,12 +101,14 @@
         },
         focus: function(message){app.log('popup focus')
             this.tpl.show();
+            app.blockReturn = true;
         },
         hide: function(){app.log('popup hide')
             this.parent.toPrevActiveWidget();
         },
         blur: function(){
             this.tpl.hide();
+            app.blockReturn = false;
         },
         render: function(){
 
