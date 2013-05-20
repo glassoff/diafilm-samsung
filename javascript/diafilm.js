@@ -16,6 +16,17 @@
     }
 
     app.loadedImages = [];
+    app.imagesLoadErrorsCount = 0;
+    app.addImageLoadError = function(){
+        this.imagesLoadErrorsCount++;
+        if(this.imagesLoadErrorsCount > 5){
+            app.trigger("error_ajax");
+        }
+    }
+    window.setInterval(function(){
+        app.log('clear image load errors');
+        app.imagesLoadErrorsCount = 0;
+    }, 60000);
 
     //image loader
     var imgLoader = function(){
@@ -43,6 +54,7 @@
         }
         else{
             $(img).load(onLoad);
+            $(img).error(onError);
         }
 
         function onLoad(){
@@ -55,6 +67,12 @@
                 app.log('IMAGES LOAD! ', _this.loaded);
                 _this.onLoad();
             }
+        }
+
+        function onError(){
+            app.log('[error] error load image!')
+            app.addImageLoadError();
+            onLoad();
         }
 
         return img;
@@ -96,7 +114,7 @@
             this.addWidget(this.popup);
 
             app.on("error_ajax", function(){
-                _this.popup.show('Сервер недоступен<br><br>Приложение будет закрыто');
+                _this.popup.show('Сервер недоступен или проблемы с сетью<br><br>Приложение будет закрыто');
             });
             app.on("no_internet", function(){
                 _this.popup.show("Отсутствует соединение с Internet<br><br>Приложение будет закрыто");

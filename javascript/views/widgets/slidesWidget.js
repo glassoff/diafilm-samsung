@@ -169,6 +169,11 @@
 
             var slide = $('<div style="position: relative;">').append($(img).css('height', this.height + 'px')).css('height', this.height + 'px');
 //            slide.append($('<div style="position: absolute; color:#fff;top:0;left:0;">').text(index));
+
+            $(img).error(function(){
+                $('<div class="error-slide">Слайд не удалось загрузить :(</div>').appendTo(slide);
+            });
+
             return slide;
         },
         render: function(){

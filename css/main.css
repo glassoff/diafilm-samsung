@@ -200,6 +200,17 @@ body{
 
 }
 
+.error-slide{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    font-size: 20px;
+    color: #fff;
+
+    text-align: center;
+}
+
 /* debug */
 #debug{
     position: absolute;
