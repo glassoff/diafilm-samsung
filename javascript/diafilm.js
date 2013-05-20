@@ -85,11 +85,40 @@
 
     app.imgLoader = imgLoader;
 
+                                        /* scene with error popup */
+    app.withErrorPopupScene = app.widgetScene.extend({
+        initErrorPopup: function(){
+            var _this = this;
+
+            this.popup = new app.widgets.popupWidget({
+                titleText: 'Ошибка'
+            });
+            this.addWidget(this.popup);
+
+            app.on("error_ajax", function(){
+                _this.popup.show('Сервер недоступен<br><br>Приложение будет закрыто');
+            });
+            app.on("no_internet", function(){
+                _this.popup.show("Отсутствует соединение с Internet<br><br>Приложение будет закрыто");
+
+                app.once("internet", function(){
+                    _this.popup.hide();
+                });
+            });
+
+            this.on("rendered", function(){
+                $('#popupWidget', _this.el).append(_this.popup.render().el);
+            });
+        }
+    });
+
                                         /* scene with loader */
-    app.withLoaderScene = app.widgetScene.extend({
+    app.withLoaderScene = app.withErrorPopupScene.extend({
         initLoader: function(){
             var _this = this;
-            this.prevActiveWidget = null;
+
+            this.initErrorPopup();
+
             this.blured = true;
 
             this.hiddenLoader = true;
@@ -112,7 +141,7 @@
 
             this.activeWidget.blur();
             if(this.prevActiveWidget){
-                this.activeWidget = this.prevWidget;
+                this.activeWidget = this.prevActiveWidget;
             }
             this.trigger("blured");
         },
@@ -122,7 +151,6 @@
             this.hiddenLoader = false;
             setTimeout(function(){
                 if(!_this.blured && !_this.hiddenLoader){
-                    _this.prevActiveWidget = _this.activeWidget;
                     _this.focusWidget(_this.loader);
 
                     if(notBlockReturn){
@@ -132,9 +160,10 @@
             }, 300);
         },
         hideLoader: function(){
-            app.log('hide loader')
             this.hiddenLoader = true;
-            this.focusWidget(this.prevActiveWidget);
+            if(this.prevActiveWidget != this.activeWidget && this.prevActiveWidget != this.loader){
+                this.toPrevActiveWidget();
+            }
         }
     });
 

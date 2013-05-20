@@ -2,6 +2,7 @@
 (function(){
     var widgetAPI = new Common.API.Widget();
     var tvKey = new Common.API.TVKeyValue();
+    var networkPlugin  = document.getElementById('pluginObjectNetwork');
 
     function MyStorage() {
         this._filename = window.curWidget.id + '/zoomStorage5.json';
@@ -73,6 +74,27 @@
 
         this.initialize();
         this.start();
+
+        //check connection
+//        setInterval(function() {
+//            if(!checkConnection() ){
+//                // no internet connection
+//                app.log('no intenet!');
+//                app.trigger("no_internet");
+//            } else {
+//                // if error message was shown, it should be returned back to normal
+//                app.trigger("internet");
+//            }
+//        }, 3000);
+    }
+
+    app.exit = function(toSmartHub){
+        if(toSmartHub){
+            widgetAPI.sendReturnEvent();
+        }
+        else{
+            widgetAPI.sendExitEvent();
+        }
     }
 
     app.onUnload = function()
@@ -146,6 +168,39 @@
             nativeAlert(text);
         };
     }
+
+    function checkConnection() {
+        var physicalConnection = 0,
+            httpStatus = 0;
+
+        // Get active connection type - wired or wireless.
+        currentInterface = networkPlugin.GetActiveType();
+
+        // If no active connection.
+        if (currentInterface === -1) {
+            return false;
+        }
+
+        // Check physical connection of current interface.
+        physicalConnection = networkPlugin.CheckPhysicalConnection(currentInterface);
+
+        // If not connected or error.
+        if (physicalConnection !== 1) {
+            return false;
+        }
+
+        // Check HTTP transport.
+        httpStatus = networkPlugin.CheckHTTP(currentInterface);
+
+        // If HTTP is not avaliable.
+        if (httpStatus !== 1) {
+            return false;
+        }
+
+        // Everything went OK.
+        return true;
+    }
+
 })();
 
 

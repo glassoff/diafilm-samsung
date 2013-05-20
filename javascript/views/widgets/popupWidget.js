@@ -2,21 +2,23 @@
 (function(){
     app.widgets.popupWidget = app.Widget.extend({
         disabled: true,
+        modal: true,
         buttons: [
             {
                 title: 'OK',
                 el: null,
-                action: function(){
-
+                action: function(popup){
+//                    popup.hide();
+                    app.exit(true);
                 }
             },
-            {
-                title: 'Выйти',
-                el: null,
-                action: function(){
-
-                }
-            }
+//            {
+//                title: 'Выйти',
+//                el: null,
+//                action: function(){
+//
+//                }
+//            }
         ],
         activeButtonIndex: 0,
         initialize: function(){
@@ -32,7 +34,6 @@
                     '<div class="modal-header">'+
                     '</div>'+
                     '<div class="modal-body">'+
-                        '<p>One fine body…</p>'+
                     '</div>'+
                     '<div class="modal-footer">'+
                     '</div>'+
@@ -45,7 +46,6 @@
             this.footer = $('.modal-footer', this.tpl);
 
             this.header.text(this.options.titleText);
-            this.content.text(this.options.contentText);
 
             _.each(this.buttons, function(btn, i){
                 var btnEl = $('<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>');
@@ -73,7 +73,7 @@
                 _this.nextButton();
             });
             this.on("key_enter", function(){
-
+                _this.buttons[_this.activeButtonIndex].action(_this);
             });
         },
         activateButton: function(index){
@@ -91,8 +91,22 @@
                 this.activateButton(this.activeButtonIndex - 1);
             }
         },
-        focus: function(){app.log('POPUP')
+        show: function(message){
+            if(message){
+                this.content.html(message);
+            }
+            if(!this.tpl.is(":visible")){
+                this.parent.focusWidget(this);
+            }
+        },
+        focus: function(message){app.log('popup focus')
             this.tpl.show();
+        },
+        hide: function(){app.log('popup hide')
+            this.parent.toPrevActiveWidget();
+        },
+        blur: function(){
+            this.tpl.hide();
         },
         render: function(){
 

@@ -141,7 +141,9 @@ app.history = {
                                                     /* view with widgets */
 app.Widget = Backbone.View.extend({
     disabled: false,
+    modal: false,
     switchLoop: 1,
+    prevActiveWidget: null,
     initialize: function(){
         this.initWidgets();
     },
@@ -181,9 +183,9 @@ app.Widget = Backbone.View.extend({
         var length = this.widgets.push(view);
         view.index = length - 1;
 
-        if(!this.activeWidget){
-            this.activeWidget = view;
-        }
+//        if(!this.activeWidget){
+//            this.activeWidget = view;
+//        }
     },
     replaceWidget: function(view, newView){
         var _this = this;
@@ -279,16 +281,19 @@ app.Widget = Backbone.View.extend({
     },
     // set widget will be focused on view render
     setActiveWidget: function(view){
-        this.activeWidget.blur();
+//        if(this.activeWidget){
+//            this.activeWidget.blur();
+//        }
         this.activeWidget = view;
     },
     focusWidget: function(view, direction){
-        if(!view){
+        if(!view || (this.activeWidget && this.activeWidget.modal)){
             return;
         }
-//        if(this.activeWidget && !this.activeWidget.isDisabled()){
+        this.prevActiveWidget = this.activeWidget;
+        if(this.activeWidget && this.activeWidget != view){
             this.activeWidget.blur();
-//        }
+        }
         view.focus(direction);
         this.activeWidget = view;
     },
@@ -313,6 +318,9 @@ app.Widget = Backbone.View.extend({
             this.activeWidget.blur();
         }
         this.trigger("blured");
+    },
+    toPrevActiveWidget: function(){
+        this.focusWidget(this.prevActiveWidget);
     },
     name: "NoName",
     log: function(){

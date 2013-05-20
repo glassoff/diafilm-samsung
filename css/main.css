@@ -52,7 +52,7 @@ body{
 }
 #latest{
     float: right;
-    width: 650px;
+    width: 630px;
 }
 
 
@@ -301,6 +301,9 @@ body{
     color:#000;
 
     z-index: 9999;
-    position: relative;
+    position: absolute;
+}
+.modal-header{
+    font-size: 20px;
 }
 

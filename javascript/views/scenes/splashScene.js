@@ -1,26 +1,11 @@
 (function(){
-    app.scenes.splashScene = app.widgetScene.extend({
+    app.scenes.splashScene = app.withErrorPopupScene.extend({
         histored: false,
         init: function(){
 
             var _this = this;
 
-
-            //error popup
-            this.popup = new app.widgets.popupWidget({
-                titleText: 'Ошибка',
-                contentText: 'Сервер недоступен'
-            });
-            this.addWidget(this.popup);
-
-            app.on("error_ajax", function(){
-                _this.popup.focus();
-            });
-
-            this.on("rendered", function(){
-                $('#popupWidget', _this.el).append(_this.popup.render().el);
-            });
-            //
+            this.initErrorPopup();
 
             this.render();
 
