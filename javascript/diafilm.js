@@ -19,14 +19,14 @@
     app.imagesLoadErrorsCount = 0;
     app.addImageLoadError = function(){
         this.imagesLoadErrorsCount++;
-        if(this.imagesLoadErrorsCount > 5){
+        if(this.imagesLoadErrorsCount > app.config.imagesLoadErrorsMaxCount){
             app.trigger("error_ajax");
         }
     }
     window.setInterval(function(){
         app.log('clear image load errors');
         app.imagesLoadErrorsCount = 0;
-    }, 60000);
+    }, app.config.clearImageErrorsInterval);
 
     //image loader
     var imgLoader = function(){
@@ -55,6 +55,15 @@
         else{
             $(img).load(onLoad);
             $(img).error(onError);
+
+            if(typeof(img.onerror) == 'undefined'){
+                app.log('[warning] emulate image load error');
+                window.setTimeout(function(){
+                    if(!_this.images[url].loaded){
+                        $(img).trigger("error");
+                    }
+                }, app.config.imageLoadTimeout);
+            }
         }
 
         function onLoad(){
@@ -72,7 +81,7 @@
         function onError(){
             app.log('[error] error load image!')
             app.addImageLoadError();
-            onLoad();
+            $(img).trigger("load");
         }
 
         return img;

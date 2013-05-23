@@ -171,6 +171,7 @@
 //            slide.append($('<div style="position: absolute; color:#fff;top:0;left:0;">').text(index));
 
             $(img).error(function(){
+                $(img).hide();
                 $('<div class="error-slide">Слайд не удалось загрузить :(</div>').appendTo(slide);
             });
 
