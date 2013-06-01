@@ -313,8 +313,14 @@ body{
 
     z-index: 9999;
     position: absolute;
+
+    margin: -90px 0 0 -280px;
 }
 .modal-header{
     font-size: 20px;
+}
+
+.btn-primary {
+    background: #59008C !important;
 }
 
