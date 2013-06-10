@@ -167,7 +167,7 @@
             this.hiddenLoader = true;
 
             this.activeWidget.blur();
-            if(this.prevActiveWidget){
+            if(this.activeWidget == this.loader && this.prevActiveWidget){//XXX вроде так
                 this.activeWidget = this.prevActiveWidget;
             }
             this.trigger("blured");
