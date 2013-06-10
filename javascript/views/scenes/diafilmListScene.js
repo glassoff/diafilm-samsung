@@ -105,11 +105,13 @@
                     var tileEl = tile.el;
 
                     var oldImgUrl = tileEl.find('img').attr('src');
-                    if(tileEl.get(0).deleteChild){
-                        tileEl.get(0).deleteChild(tileEl.get(0).firstChild);
-                    }
-                    else{
-                        tileEl.get(0).removeChild(tileEl.get(0).firstChild);
+                    if(tileEl.get(0).firstChild){
+                        if(tileEl.get(0).deleteChild){
+                            tileEl.get(0).deleteChild(tileEl.get(0).firstChild);
+                        }
+                        else{
+                            tileEl.get(0).removeChild(tileEl.get(0).firstChild);
+                        }
                     }
                     _this.images.delete(oldImgUrl);
                 });
