@@ -169,7 +169,7 @@ body{
     left: 0;
     bottom: 42px;
 
-    /*border:1px solid yellow;*/
+    background: 0 0 no-repeat url(../images/logo_smart.jpg);
 }
 
 /* header */

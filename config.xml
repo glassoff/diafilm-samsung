@@ -8,7 +8,7 @@
 	<type itemtype="string">user</type>
 	<cpname itemtype="string"></cpname>
 	<cpauthjs itemtype="string"></cpauthjs>
-	<ver itemtype="string">1.2</ver>
+	<ver itemtype="string">1.001</ver>
 	<mgver itemtype="string"></mgver>
 	<fullwidget itemtype="boolean">y</fullwidget>
 	<srcctl itemtype="boolean">y</srcctl>
