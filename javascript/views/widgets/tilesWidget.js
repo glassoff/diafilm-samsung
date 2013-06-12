@@ -76,7 +76,7 @@
 
                 this.activateTileOnIndex(this.activeTileIndex + 1);*/
             }
-            else if(this.isNextVisible()){
+            else if(this.isNextVisible() && this.activeTileIndex + 1 < this.cols * (activeTile.row + 1)){
                 this.activateTileOnIndex(this.activeTileIndex + 1);
             }
             else{

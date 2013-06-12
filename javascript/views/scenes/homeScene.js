@@ -9,12 +9,54 @@
             this.diafilmCollection = this.options.diafilmCollection;
             this.categoryCollection = this.diafilmCollection.categoryCollection;
 
+            //container
+            this.container = new app.widgets.containerWidget({
+                next: function(){
+                    if(this.activeWidget == _this.categories && this.from == "right"){
+                        this.nextWidget();
+                        return;
+                    }
+
+                    _this.nextWidget();
+                },
+                prev: function(){
+                    if(this.activeWidget == _this.latests && this.from == "left"){
+                        this.prevWidget();
+                        return;
+                    }
+
+                    _this.prevWidget();
+                },
+
+                up: function(){
+                    this.from = "up";
+
+                    this.activeWidget.trigger("key_up");
+                },
+                down: function(){
+                    this.from = "down";
+
+                    this.activeWidget.trigger("key_down");
+                },
+                left: function(){
+                    this.from = "left";
+
+                    this.activeWidget.trigger("key_left");
+                },
+                right: function(){
+                    this.from = "right";
+
+                    this.activeWidget.trigger("key_right");
+                }
+
+            });
+
             //categories
             this.categories = new app.widgets.listWidget({
                 collection: this.categoryCollection
             });
             this.categories.count = this.categoryCollection.length;
-            this.addWidget(this.categories);
+            this.container.addWidget(this.categories);
 
             this.categories.on("key_enter", function(){
                 var categoryDiafilms = [];
@@ -63,7 +105,7 @@
                 return html;
             };
 
-            this.addWidget(this.latests);
+            this.container.addWidget(this.latests);
 
             this.latests.on("key_enter", function(){
                 _this.showLoader();
@@ -72,11 +114,14 @@
                 });
             });
 
+            this.addWidget(this.container);
+            this.container.setActiveWidget(this.categories);
+
             //banner
             this.banner = new app.widgets.bannerWidget();
             this.addWidget(this.banner);
 
-            this.setActiveWidget(this.categories);
+            this.setActiveWidget(this.container);
 
             _this.render();
         },
