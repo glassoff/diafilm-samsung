@@ -122,9 +122,17 @@
             app.log('slides down')
             var tileIndex = this.activeTileIndex + this.cols;
 
-            if(!this.tiles[tileIndex] || !this.isTileVisible(this.tiles[tileIndex])){
+            if(!this.tiles[tileIndex]){
                 this.parent.trigger('next_widget');
                 return;
+            }
+            else if(!this.isTileVisible(this.tiles[tileIndex]))
+            {
+                tileIndex = tileIndex - 1;
+                if(!this.tiles[tileIndex] || !this.isTileVisible(this.tiles[tileIndex])){
+                    this.parent.trigger('next_widget');
+                    return;
+                }
             }
 
             this.activateTileOnIndex(tileIndex);
